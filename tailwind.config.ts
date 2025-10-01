@@ -47,16 +47,28 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        player: {
+          DEFAULT: "hsl(var(--player))",
+          light: "hsl(var(--player-light))",
         },
+        boss: {
+          DEFAULT: "hsl(var(--boss))",
+          dark: "hsl(var(--boss-dark))",
+        },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+        gold: "hsl(var(--gold))",
+      },
+      backgroundImage: {
+        'gradient-game': 'var(--gradient-game)',
+        'gradient-player': 'var(--gradient-player)',
+        'gradient-boss': 'var(--gradient-boss)',
+        'gradient-victory': 'var(--gradient-victory)',
+      },
+      boxShadow: {
+        'glow': 'var(--shadow-glow)',
+        'player': 'var(--shadow-player)',
+        'boss': 'var(--shadow-boss)',
       },
       borderRadius: {
         lg: "var(--radius)",
