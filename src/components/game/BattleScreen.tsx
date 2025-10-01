@@ -141,10 +141,10 @@ export const BattleScreen = ({
   const bossInRage = gameState.bossHealth < gameState.currentBoss.maxHealth * 0.2;
 
   return (
-    <div className="min-h-screen bg-gradient-game p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-game p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         {/* Top Bar */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-3">
           <ComboIndicator combo={gameState.combo} specialAttackReady={specialAttackReady} />
           <Timer seconds={timeLeft} maxSeconds={MAX_TIME} />
           <PowerUpBar 
@@ -155,9 +155,26 @@ export const BattleScreen = ({
         </div>
 
         {/* Battle Arena */}
-        <div className="grid grid-cols-3 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 items-start lg:items-center">
+          {/* Mobile: Boss First */}
+          <div className="space-y-4 lg:hidden order-1">
+            <Avatar
+              type="boss"
+              name={gameState.currentBoss.name}
+              level={gameState.currentBoss.difficulty}
+              isAttacking={isBossAttacking}
+              isHurt={isBossHurt}
+              inRageMode={bossInRage}
+            />
+            <HealthBar
+              current={gameState.bossHealth}
+              max={gameState.currentBoss.maxHealth}
+              type="boss"
+            />
+          </div>
+
           {/* Player Side */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-2 lg:order-1">
             <Avatar
               type="player"
               name={gameState.player.name}
@@ -171,14 +188,14 @@ export const BattleScreen = ({
               max={gameState.player.maxHealth}
               type="player"
             />
-            <div className="text-center space-y-1">
-              <p className="text-sm text-muted-foreground">Coins: {gameState.player.coins}</p>
-              <p className="text-sm text-muted-foreground">XP: {gameState.player.xp}</p>
+            <div className="flex justify-center gap-6 text-sm">
+              <span className="text-muted-foreground">💰 {gameState.player.coins}</span>
+              <span className="text-muted-foreground">⭐ {gameState.player.xp} XP</span>
             </div>
           </div>
 
           {/* Question Panel */}
-          <div>
+          <div className="order-3 lg:order-2">
             <QuestionPanel
               question={gameState.currentQuestion.question}
               answers={gameState.currentQuestion.answers}
@@ -191,8 +208,8 @@ export const BattleScreen = ({
             />
           </div>
 
-          {/* Boss Side */}
-          <div className="space-y-4">
+          {/* Boss Side - Desktop Only */}
+          <div className="space-y-4 hidden lg:block order-4 lg:order-3">
             <Avatar
               type="boss"
               name={gameState.currentBoss.name}

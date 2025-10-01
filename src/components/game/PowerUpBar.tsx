@@ -26,7 +26,7 @@ export const PowerUpBar = ({ powerUps, onUsePowerUp, disabled }: PowerUpBarProps
   ];
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1.5 md:gap-2">
       {powerUpsList.map(({ type, count, icon: Icon, label }) => (
         <Button
           key={type}
@@ -35,15 +35,15 @@ export const PowerUpBar = ({ powerUps, onUsePowerUp, disabled }: PowerUpBarProps
           variant="outline"
           size="sm"
           className={cn(
-            "relative border-2 border-primary/30 hover:border-primary hover:bg-primary/10",
+            "relative border-2 border-primary/30 hover:border-primary hover:bg-primary/10 px-2 md:px-3",
             "transition-all hover:scale-105",
             count === 0 && "opacity-50 grayscale"
           )}
         >
-          <Icon className="h-4 w-4 mr-1" />
-          <span className="text-xs font-bold">{label}</span>
+          <Icon className="h-3 w-3 md:h-4 md:w-4 md:mr-1" />
+          <span className="text-xs font-bold hidden md:inline">{label}</span>
           {count > 0 && (
-            <span className="absolute -top-2 -right-2 bg-gold text-background text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+            <span className="absolute -top-1.5 -right-1.5 md:-top-2 md:-right-2 bg-gold text-background text-[10px] md:text-xs font-bold w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center">
               {count}
             </span>
           )}

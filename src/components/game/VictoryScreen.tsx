@@ -18,19 +18,19 @@ export const VictoryScreen = ({
   onContinue
 }: VictoryScreenProps) => {
   return (
-    <div className="min-h-screen bg-gradient-game flex items-center justify-center p-8">
-      <Card className="max-w-2xl w-full p-8 space-y-8 bg-card border-2 border-gold shadow-glow">
-        <div className="text-center space-y-4 victory-bounce">
-          <Trophy className="h-24 w-24 text-gold mx-auto animate-pulse" />
-          <h1 className="text-5xl font-bold text-foreground text-glow">
+    <div className="min-h-screen bg-gradient-game flex items-center justify-center p-4 md:p-8">
+      <Card className="max-w-2xl w-full p-6 md:p-8 space-y-6 md:space-y-8 bg-card border-2 border-gold shadow-glow">
+        <div className="text-center space-y-3 md:space-y-4 victory-bounce">
+          <Trophy className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 text-gold mx-auto animate-pulse" />
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground text-glow">
             VICTORY!
           </h1>
-          <p className="text-2xl text-muted-foreground">
+          <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground">
             You defeated {bossName}!
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-gradient-victory p-6 rounded-xl text-center space-y-2">
             <Coins className="h-10 w-10 text-background mx-auto" />
             <p className="text-sm text-background/80 font-medium">Coins Earned</p>

@@ -18,18 +18,18 @@ export const MapScreen = ({
   onSelectBoss 
 }: MapScreenProps) => {
   return (
-    <div className="min-h-screen bg-gradient-game p-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-game p-4 md:p-8">
+      <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-5xl font-bold text-foreground text-glow">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground text-glow">
             Boss Fight Arena
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-base md:text-lg lg:text-xl text-muted-foreground">
             Choose your battle and conquer the bosses!
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {bosses.map((boss, index) => {
             const isDefeated = defeatedBosses.includes(boss.id);
             const isUnlocked = boss.id <= currentBossId;
