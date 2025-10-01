@@ -3,27 +3,30 @@ import { Boss, Question } from "@/types/game";
 export const BOSSES: Boss[] = [
   {
     id: 1,
-    name: "Math Golem",
+    name: "Baby Dragon",
     maxHealth: 100,
     damage: 10,
     theme: "Mathematics",
-    difficulty: 1
+    difficulty: 1,
+    icon: "🐲"
   },
   {
     id: 2,
-    name: "Virus Monster",
+    name: "Young Dragon",
     maxHealth: 150,
     damage: 15,
     theme: "Science",
-    difficulty: 2
+    difficulty: 2,
+    icon: "🐉"
   },
   {
     id: 3,
-    name: "History Pharaoh",
+    name: "Dragon Warrior",
     maxHealth: 200,
     damage: 20,
     theme: "History",
-    difficulty: 3
+    difficulty: 3,
+    icon: "🔥"
   },
   {
     id: 4,
@@ -31,7 +34,8 @@ export const BOSSES: Boss[] = [
     maxHealth: 300,
     damage: 25,
     theme: "Final Boss",
-    difficulty: 4
+    difficulty: 4,
+    icon: "👑🐉"
   }
 ];
 

@@ -9,6 +9,7 @@ interface AvatarProps {
   isHurt?: boolean;
   hasShield?: boolean;
   inRageMode?: boolean;
+  icon?: string;
 }
 
 export const Avatar = ({ 
@@ -18,7 +19,8 @@ export const Avatar = ({
   isAttacking, 
   isHurt,
   hasShield,
-  inRageMode 
+  inRageMode,
+  icon
 }: AvatarProps) => {
   return (
     <div className={cn(
@@ -31,7 +33,7 @@ export const Avatar = ({
         type === "player" ? "bg-gradient-player shadow-player" : "bg-gradient-boss shadow-boss",
         inRageMode && "pulse-glow"
       )}>
-        {type === "player" ? "🛡️" : "👹"}
+        {icon || (type === "player" ? "🛡️" : "👹")}
         {hasShield && (
           <Shield className="absolute -top-1 -right-1 md:-top-2 md:-right-2 h-6 w-6 md:h-8 md:w-8 lg:h-10 lg:w-10 text-player animate-pulse" />
         )}

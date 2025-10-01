@@ -165,6 +165,7 @@ export const BattleScreen = ({
               isAttacking={isBossAttacking}
               isHurt={isBossHurt}
               inRageMode={bossInRage}
+              icon={gameState.currentBoss.icon}
             />
             <HealthBar
               current={gameState.bossHealth}
@@ -217,6 +218,7 @@ export const BattleScreen = ({
               isAttacking={isBossAttacking}
               isHurt={isBossHurt}
               inRageMode={bossInRage}
+              icon={gameState.currentBoss.icon}
             />
             <HealthBar
               current={gameState.bossHealth}

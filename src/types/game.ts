@@ -14,6 +14,7 @@ export interface Boss {
   damage: number;
   theme: string;
   difficulty: number;
+  icon: string;
 }
 
 export interface Player {

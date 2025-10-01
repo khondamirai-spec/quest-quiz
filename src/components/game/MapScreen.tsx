@@ -56,10 +56,7 @@ export const MapScreen = ({
                 <div className="space-y-4">
                   <div className="text-center">
                     <div className="text-6xl mb-2">
-                      {index === 0 && "🗿"}
-                      {index === 1 && "👾"}
-                      {index === 2 && "🏛️"}
-                      {index === 3 && "🐉"}
+                      {boss.icon}
                     </div>
                     <h3 className="text-xl font-bold text-foreground">
                       {boss.name}
