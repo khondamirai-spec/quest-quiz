@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BackgroundGlow } from "@/components/ui/background-components";
 import { Level, Player } from "@/types/game";
@@ -62,7 +62,7 @@ export const MapScreen = ({
   const currentLevelTheme = currentLevel?.theme || subjectName;
 
   return (
-    <div className="min-h-screen relative bg-gradient-to-br from-green-50 via-emerald-50 to-cyan-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+    <div className="min-h-screen relative bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
       {/* Soft Yellow Glow Background */}
       <BackgroundGlow />
       
@@ -158,7 +158,7 @@ export const MapScreen = ({
                         ) : isCompleted ? (
                           <CheckCircle className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white drop-shadow-lg" fill="currentColor" />
                         ) : (
-                          <span className="relative z-10 text-3xl sm:text-4xl md:text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] filter brightness-110">
+                          <span className="relative z-10 text-3xl sm:text-4xl md:text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] filter brightness-110 flex items-center justify-center">
                             {level.icon}
                           </span>
                         )}
@@ -202,9 +202,11 @@ export const MapScreen = ({
                         )}>
                           {level.name}
                         </p>
-                        <p className="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
-                          {isBoss ? "Boss Level" : `Lesson ${level.id}`}
-                    </p>
+                        {isBoss && (
+                          <p className="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
+                            Boss Level
+                          </p>
+                        )}
                   </div>
 
                       {/* Unit badge for first level only */}
@@ -254,7 +256,7 @@ export const MapScreen = ({
                     )}
                     {index === 2 && (
                       <div className="absolute right-16 sm:right-20 md:right-24 top-0 w-11 h-11 sm:w-13 sm:h-13 md:w-16 md:h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full border-2 sm:border-3 md:border-4 border-green-600 shadow-[0_3px_0_0_rgba(5,150,105,0.5)] sm:shadow-[0_5px_0_0_rgba(5,150,105,0.5)] flex items-center justify-center text-xl sm:text-2xl md:text-3xl">
-                        🎧
+                       🎧
                       </div>
                     )}
                     {index === 1 && (
@@ -319,7 +321,7 @@ export const MapScreen = ({
                     onClick={() => setShowGuide(false)}
                     className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
                   >
-                    <span className="text-white text-xl">×</span>
+                    <span className="text-white text-xl">Г—</span>
                   </button>
                 </div>
               </div>
@@ -334,7 +336,7 @@ export const MapScreen = ({
                     transition={{ delay: 0.1 }}
                     className="flex gap-3 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-800"
                   >
-                    <div className="text-3xl shrink-0">🎯</div>
+                    <div className="text-3xl shrink-0">Ї</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
                         Complete Lessons
@@ -352,7 +354,7 @@ export const MapScreen = ({
                     transition={{ delay: 0.2 }}
                     className="flex gap-3 p-3 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-800"
                   >
-                    <div className="text-3xl shrink-0">🐉</div>
+                    <div className="text-3xl shrink-0">рџђ‰</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
                         Defeat Bosses
@@ -370,7 +372,7 @@ export const MapScreen = ({
                     transition={{ delay: 0.3 }}
                     className="flex gap-3 p-3 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800"
                   >
-                    <div className="text-3xl shrink-0">💰</div>
+                    <div className="text-3xl shrink-0">рџ’°</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
                         Earn Rewards
@@ -426,7 +428,7 @@ export const MapScreen = ({
                     transition={{ delay: 0.5 }}
                     className="flex gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-800"
                   >
-                    <div className="text-3xl shrink-0">💡</div>
+                    <div className="text-3xl shrink-0">рџ’Ў</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
                         Pro Tips
@@ -482,7 +484,7 @@ export const MapScreen = ({
                       onClick={() => setShowLeaderboard(false)}
                       className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
                     >
-                      <span className="text-white text-xl">×</span>
+                      <span className="text-white text-xl">Г—</span>
                     </button>
                   </div>
                 </div>
@@ -533,7 +535,7 @@ export const MapScreen = ({
                       onClick={() => setShowProfile(false)}
                       className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
                     >
-                      <span className="text-white text-xl">×</span>
+                      <span className="text-white text-xl">Г—</span>
                     </button>
                   </div>
                 </div>
@@ -544,7 +546,7 @@ export const MapScreen = ({
                     {/* Player Avatar */}
                     <div className="flex flex-col items-center gap-3 pb-4 border-b border-zinc-200 dark:border-zinc-700">
                       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-4xl">
-                        👤
+                        рџ‘¤
                       </div>
                       <div className="text-center">
                         <h3 className="text-xl font-bold text-zinc-800 dark:text-white">{player?.name || "Hero"}</h3>
@@ -555,22 +557,22 @@ export const MapScreen = ({
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="p-4 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                        <div className="text-2xl mb-1">💰</div>
+                        <div className="text-2xl mb-1">рџ’°</div>
                         <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-500">{player?.coins || 0}</p>
                         <p className="text-xs text-zinc-600 dark:text-zinc-400">Coins</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                        <div className="text-2xl mb-1">⭐</div>
+                        <div className="text-2xl mb-1">в­ђ</div>
                         <p className="text-2xl font-bold text-blue-700 dark:text-blue-500">{player?.xp || 0}</p>
                         <p className="text-xs text-zinc-600 dark:text-zinc-400">XP</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-800">
-                        <div className="text-2xl mb-1">🎯</div>
+                        <div className="text-2xl mb-1">Ї</div>
                         <p className="text-2xl font-bold text-green-700 dark:text-green-500">{completedCount}</p>
                         <p className="text-xs text-zinc-600 dark:text-zinc-400">Completed</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-800">
-                        <div className="text-2xl mb-1">🔥</div>
+                        <div className="text-2xl mb-1">рџ”Ґ</div>
                         <p className="text-2xl font-bold text-orange-700 dark:text-orange-500">{streak}</p>
                         <p className="text-xs text-zinc-600 dark:text-zinc-400">Streak</p>
                       </div>
@@ -598,7 +600,7 @@ export const MapScreen = ({
                     {/* Health Stats */}
                     <div className="p-4 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border border-red-200 dark:border-red-800">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xl">❤️</span>
+                        <span className="text-xl">вќ¤пёЏ</span>
                         <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Health</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -623,4 +625,5 @@ export const MapScreen = ({
     </div>
   );
 };
+
 

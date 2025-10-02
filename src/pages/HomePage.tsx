@@ -14,26 +14,32 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
     {
       id: "math",
       name: "Mathematics",
-      icon: "🔢",
-      color: "from-blue-500 to-cyan-500",
-      hoverColor: "from-blue-600 to-cyan-600",
+      icon: "∑",
+      color: "from-blue-600 via-cyan-500 to-teal-600",
+      hoverColor: "from-blue-700 via-cyan-600 to-teal-700",
+      glowColor: "shadow-blue-500/50",
       description: "Numbers, equations & logic",
+      accent: "bg-blue-500/20",
     },
     {
       id: "biology",
       name: "Biology",
       icon: "🧬",
-      color: "from-green-500 to-emerald-500",
-      hoverColor: "from-green-600 to-emerald-600",
+      color: "from-emerald-600 via-green-500 to-lime-600",
+      hoverColor: "from-emerald-700 via-green-600 to-lime-700",
+      glowColor: "shadow-emerald-500/50",
       description: "Life science & organisms",
+      accent: "bg-emerald-500/20",
     },
     {
       id: "coding",
       name: "Coding",
-      icon: "💻",
-      color: "from-purple-500 to-pink-500",
-      hoverColor: "from-purple-600 to-pink-600",
+      icon: "</>",
+      color: "from-purple-600 via-violet-500 to-fuchsia-600",
+      hoverColor: "from-purple-700 via-violet-600 to-fuchsia-700",
+      glowColor: "shadow-purple-500/50",
       description: "Programming & algorithms",
+      accent: "bg-purple-500/20",
     },
   ];
 
@@ -160,7 +166,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
         >
           {/* Animated Logo */}
           <motion.div
-            className="inline-block mb-0 -mt-24"
+            className="inline-block mb-0 -mt-12"
             animate={{
               rotate: [0, 5, -5, 0],
               scale: [1, 1.1, 1],
@@ -174,12 +180,12 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
             <img 
               src="/logo.png" 
               alt="Quiz Quest Logo" 
-              className="w-80 h-80 sm:w-[28rem] sm:h-[28rem] md:w-[40rem] md:h-[40rem] lg:w-[48rem] lg:h-[48rem] object-contain"
+              className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain"
             />
           </motion.div>
 
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 -mt-16"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 -mt-8"
             style={{
               background: "linear-gradient(to right, #60a5fa, #a78bfa, #f472b6)",
               WebkitBackgroundClip: "text",
@@ -238,94 +244,162 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + index * 0.1, duration: 0.6 }}
-                whileHover={{ scale: 1.05, y: -10 }}
+                whileHover={{ scale: 1.03, y: -8 }}
                 onHoverStart={() => setHoveredSubject(subject.id)}
                 onHoverEnd={() => setHoveredSubject(null)}
-                className="relative"
+                className="relative group"
               >
                 <button
                   onClick={() => onSelectSubject(subject.id)}
-                  className="w-full h-full group"
+                  className="w-full h-full"
                 >
                   <div
                     className={`
-                      relative overflow-hidden rounded-2xl p-8
+                      relative overflow-hidden rounded-3xl p-8 h-80
                       bg-gradient-to-br ${subject.color}
-                      shadow-2xl shadow-${subject.id}/50
-                      border-2 border-white/20
-                      transition-all duration-300
-                      ${hoveredSubject === subject.id ? "border-white/40" : ""}
+                      shadow-2xl ${subject.glowColor}
+                      border border-white/30
+                      transition-all duration-500 ease-out
+                      backdrop-blur-sm
+                      ${hoveredSubject === subject.id ? "border-white/60 shadow-3xl" : ""}
                     `}
                   >
-                    {/* Glow Effect */}
-                    <div
+                    {/* Elegant Background Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20" />
+                    
+                    {/* Animated Glow Effect */}
+                    <motion.div
                       className={`
                         absolute inset-0 opacity-0 group-hover:opacity-100
                         bg-gradient-to-br ${subject.hoverColor}
-                        transition-opacity duration-300
+                        transition-all duration-500
                       `}
+                      animate={hoveredSubject === subject.id ? {
+                        background: [`linear-gradient(135deg, ${subject.color}, ${subject.hoverColor})`, 
+                                   `linear-gradient(135deg, ${subject.hoverColor}, ${subject.color})`]
+                      } : {}}
+                      transition={{ duration: 2, repeat: Infinity }}
                     />
 
-                    {/* Animated Background Pattern */}
-                    <motion.div
-                      className="absolute inset-0 opacity-10"
-                      animate={{
-                        backgroundPosition: ["0% 0%", "100% 100%"],
-                      }}
-                      transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                      }}
-                      style={{
-                        backgroundImage:
-                          "radial-gradient(circle, white 1px, transparent 1px)",
-                        backgroundSize: "20px 20px",
-                      }}
-                    />
+                    {/* Floating Particles */}
+                    {[...Array(6)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className={`absolute w-1 h-1 ${subject.accent} rounded-full`}
+                        style={{
+                          left: `${20 + Math.random() * 60}%`,
+                          top: `${20 + Math.random() * 60}%`,
+                        }}
+                        animate={{
+                          y: [0, -20, 0],
+                          opacity: [0.3, 1, 0.3],
+                          scale: [1, 1.5, 1],
+                        }}
+                        transition={{
+                          duration: 3 + Math.random() * 2,
+                          repeat: Infinity,
+                          delay: Math.random() * 2,
+                        }}
+                      />
+                    ))}
 
                     {/* Content */}
-                    <div className="relative z-10 flex flex-col items-center text-white">
+                    <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
+                      {/* Icon Container */}
                       <motion.div
-                        className="text-6xl mb-4"
+                        className="relative mb-6"
                         animate={
                           hoveredSubject === subject.id
                             ? {
-                                scale: [1, 1.2, 1],
-                                rotate: [0, 10, -10, 0],
+                                scale: [1, 1.15, 1],
+                                rotate: [0, 5, -5, 0],
                               }
+                            : {}
+                        }
+                        transition={{ duration: 0.8 }}
+                      >
+                        {/* Icon Background Glow */}
+                        <div className={`absolute inset-0 rounded-full ${subject.accent} blur-xl scale-150 opacity-60`} />
+                        <div className="relative text-6xl font-bold filter drop-shadow-2xl text-center">
+                          {subject.id === "math" && (
+                            <div className="text-8xl font-light text-blue-100">
+                              ∑
+                            </div>
+                          )}
+                          {subject.id === "biology" && (
+                            <div className="text-7xl">
+                              🧬
+                            </div>
+                          )}
+                          {subject.id === "coding" && (
+                            <div className="text-5xl font-mono text-purple-100">
+                              &lt;/&gt;
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+
+                      {/* Title */}
+                      <motion.h3 
+                        className="text-3xl sm:text-4xl font-bold mb-3 text-center"
+                        animate={
+                          hoveredSubject === subject.id
+                            ? { scale: [1, 1.05, 1] }
                             : {}
                         }
                         transition={{ duration: 0.5 }}
                       >
-                        {subject.icon}
-                      </motion.div>
-
-                      <h3 className="text-2xl sm:text-3xl font-bold mb-2">
                         {subject.name}
-                      </h3>
+                      </motion.h3>
 
-                      <p className="text-sm sm:text-base text-white/80 mb-6">
-                        {subject.description}
-                      </p>
-
-                      <motion.div
-                        className="flex items-center gap-2 text-sm font-semibold"
+                      {/* Description */}
+                      <motion.p 
+                        className="text-base sm:text-lg text-white/90 mb-8 text-center leading-relaxed"
                         animate={
                           hoveredSubject === subject.id
-                            ? { x: [0, 5, 0] }
+                            ? { opacity: [0.9, 1, 0.9] }
                             : {}
                         }
-                        transition={{ duration: 0.5, repeat: Infinity }}
+                        transition={{ duration: 0.5 }}
                       >
-                        Start Quest
-                        <span className="text-xl">→</span>
+                        {subject.description}
+                      </motion.p>
+
+                      {/* Call to Action */}
+                      <motion.div
+                        className="flex items-center gap-3 px-6 py-3 bg-white/20 rounded-full backdrop-blur-md border border-white/30"
+                        animate={
+                          hoveredSubject === subject.id
+                            ? { 
+                                scale: [1, 1.05, 1],
+                                x: [0, 3, 0],
+                                backgroundColor: ["rgba(255,255,255,0.2)", "rgba(255,255,255,0.3)", "rgba(255,255,255,0.2)"]
+                              }
+                            : {}
+                        }
+                        transition={{ duration: 0.6, repeat: Infinity }}
+                      >
+                        <span className="text-sm font-semibold tracking-wide">Start Quest</span>
+                        <motion.span 
+                          className="text-xl"
+                          animate={
+                            hoveredSubject === subject.id
+                              ? { x: [0, 5, 0] }
+                              : {}
+                          }
+                          transition={{ duration: 0.8, repeat: Infinity }}
+                        >
+                          →
+                        </motion.span>
                       </motion.div>
                     </div>
 
-                    {/* Corner Decorations */}
-                    <div className="absolute top-2 right-2 w-16 h-16 border-t-2 border-r-2 border-white/30 rounded-tr-2xl" />
-                    <div className="absolute bottom-2 left-2 w-16 h-16 border-b-2 border-l-2 border-white/30 rounded-bl-2xl" />
+                    {/* Elegant Corner Accents */}
+                    <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/40 rounded-tr-xl" />
+                    <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/40 rounded-bl-xl" />
+                    
+                    {/* Subtle Inner Border */}
+                    <div className="absolute inset-4 rounded-2xl border border-white/10" />
                   </div>
                 </button>
               </motion.div>

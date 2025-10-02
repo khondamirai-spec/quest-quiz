@@ -1,18 +1,29 @@
 import { Boss, Question, Level } from "@/types/game";
 
-export const LEVELS: Level[] = [
-  // Test Levels
+// Biology Course Levels
+export const BIOLOGY_LEVELS: Level[] = [
+  // Biology Memory Match - First level for Biology course
   {
     id: 1,
-    name: "Math Basics",
-    type: "test",
-    theme: "Mathematics",
+    name: "Xotira O'yini",
+    type: "biology-memory-match",
+    theme: "Biology",
     difficulty: 1,
-    icon: "📚",
+    icon: "🧠",
     questionsRequired: 3
   },
+  // Biology Case Study - Second level for Biology course
   {
     id: 2,
+    name: "Biologiya Tadqiqoti",
+    type: "biology-case-study",
+    theme: "Biology",
+    difficulty: 1,
+    icon: "🧬",
+    questionsRequired: 5
+  },
+  {
+    id: 3,
     name: "Science Quiz",
     type: "test",
     theme: "Science",
@@ -21,7 +32,7 @@ export const LEVELS: Level[] = [
     questionsRequired: 3
   },
   {
-    id: 3,
+    id: 4,
     name: "History Test",
     type: "test",
     theme: "History",
@@ -30,7 +41,7 @@ export const LEVELS: Level[] = [
     questionsRequired: 3
   },
   {
-    id: 4,
+    id: 5,
     name: "Geography",
     type: "test",
     theme: "Geography",
@@ -39,7 +50,7 @@ export const LEVELS: Level[] = [
     questionsRequired: 3
   },
   {
-    id: 5,
+    id: 6,
     name: "General Knowledge",
     type: "test",
     theme: "General",
@@ -49,7 +60,7 @@ export const LEVELS: Level[] = [
   },
   // Boss Level
   {
-    id: 6,
+    id: 7,
     name: "Dragon Boss",
     type: "boss",
     theme: "Final Boss",
@@ -59,6 +70,151 @@ export const LEVELS: Level[] = [
     damage: 20
   }
 ];
+
+// Mathematics Course Levels
+export const MATH_LEVELS: Level[] = [
+  // Strategic Math Battleship - First level for Math course
+  {
+    id: 1,
+    name: "X-O O'yin",
+    type: "battleship",
+    theme: "Mathematics",
+    difficulty: 1,
+    icon: "🎯",
+    questionsRequired: 10
+  },
+  // Flash Quiz - Second level for Math course
+  {
+    id: 2,
+    name: "Flash Quiz",
+    type: "flash-quiz",
+    theme: "Mathematics",
+    difficulty: 1,
+    icon: "⚡",
+    questionsRequired: 8
+  },
+  {
+    id: 3,
+    name: "Science Quiz",
+    type: "test",
+    theme: "Science",
+    difficulty: 1,
+    icon: "🔬",
+    questionsRequired: 3
+  },
+  {
+    id: 4,
+    name: "History Test",
+    type: "test",
+    theme: "History",
+    difficulty: 1,
+    icon: "📜",
+    questionsRequired: 3
+  },
+  {
+    id: 5,
+    name: "Geography",
+    type: "test",
+    theme: "Geography",
+    difficulty: 1,
+    icon: "🌍",
+    questionsRequired: 3
+  },
+  {
+    id: 6,
+    name: "General Knowledge",
+    type: "test",
+    theme: "General",
+    difficulty: 1,
+    icon: "🧠",
+    questionsRequired: 3
+  },
+  // Boss Level
+  {
+    id: 7,
+    name: "Dragon Boss",
+    type: "boss",
+    theme: "Final Boss",
+    difficulty: 2,
+    icon: "🐉",
+    maxHealth: 100,
+    damage: 20
+  }
+];
+
+// Coding Course Levels
+export const CODING_LEVELS: Level[] = [
+  // Fix the Bug - First level for Coding course
+  {
+    id: 1,
+    name: "Xatolikni Tuzatish",
+    type: "fix-the-bug",
+    theme: "Coding",
+    difficulty: 1,
+    icon: "🐛",
+    questionsRequired: 5
+  },
+  // True or False Code Game - Second level for Coding course
+  {
+    id: 2,
+    name: "To'g'ri yoki Noto'g'ri",
+    type: "true-false-code",
+    theme: "Coding",
+    difficulty: 1,
+    icon: "✅❌",
+    questionsRequired: 5
+  },
+  {
+    id: 3,
+    name: "Science Quiz",
+    type: "test",
+    theme: "Science",
+    difficulty: 1,
+    icon: "🔬",
+    questionsRequired: 3
+  },
+  {
+    id: 4,
+    name: "History Test",
+    type: "test",
+    theme: "History",
+    difficulty: 1,
+    icon: "📜",
+    questionsRequired: 3
+  },
+  {
+    id: 5,
+    name: "Geography",
+    type: "test",
+    theme: "Geography",
+    difficulty: 1,
+    icon: "🌍",
+    questionsRequired: 3
+  },
+  {
+    id: 6,
+    name: "General Knowledge",
+    type: "test",
+    theme: "General",
+    difficulty: 1,
+    icon: "🧠",
+    questionsRequired: 3
+  },
+  // Boss Level
+  {
+    id: 7,
+    name: "Dragon Boss",
+    type: "boss",
+    theme: "Final Boss",
+    difficulty: 2,
+    icon: "🐉",
+    maxHealth: 100,
+    damage: 20
+  }
+];
+
+// Default levels (for backward compatibility)
+export const LEVELS = MATH_LEVELS;
 
 export const BOSSES: Boss[] = [
   {

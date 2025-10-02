@@ -10,7 +10,7 @@ export interface Question {
 export interface Level {
   id: number;
   name: string;
-  type: "test" | "boss";
+  type: "test" | "boss" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "flash-quiz" | "fix-the-bug" | "true-false-code";
   theme: string;
   difficulty: number;
   icon: string;
@@ -52,7 +52,7 @@ export interface GameState {
   currentQuestion: Question | null;
   combo: number;
   timeLeft: number;
-  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection";
+  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "flash-quiz" | "fix-the-bug" | "true-false-code";
   powerUps: {
     heal: number;
     shield: number;

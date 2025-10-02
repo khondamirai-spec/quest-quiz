@@ -4,8 +4,14 @@ import { BattleScreen } from "@/components/game/BattleScreen";
 import { MapScreen } from "@/components/game/MapScreen";
 import { VictoryScreen } from "@/components/game/VictoryScreen";
 import { DefeatScreen } from "@/components/game/DefeatScreen";
+import StrategicMathBattleship from "@/components/game/StrategicMathBattleship";
+import BiologyCaseStudy from "@/components/game/BiologyCaseStudy";
+import BiologyMemoryMatch from "@/components/game/BiologyMemoryMatch";
+import FlashQuiz from "@/components/game/FlashQuiz";
+import FixTheBug from "@/components/game/FixTheBug";
+import TrueFalseCodeGame from "@/components/game/TrueFalseCodeGame";
 import { GameState, Boss, Question, Level } from "@/types/game";
-import { LEVELS, BOSSES, QUESTIONS } from "@/data/gameData";
+import { LEVELS, BIOLOGY_LEVELS, MATH_LEVELS, CODING_LEVELS, BOSSES, QUESTIONS } from "@/data/gameData";
 import { PowerUpType } from "@/components/game/PowerUpBar";
 import { toast } from "sonner";
 
@@ -39,7 +45,17 @@ const Index = () => {
 
   const [currentLevelId, setCurrentLevelId] = useState(1);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
-  const [currentLevel, setCurrentLevel] = useState<Level>(LEVELS[0]);
+  
+  // Get the correct levels based on selected subject
+  const getCurrentLevels = () => {
+    if (selectedSubject === "biology") return BIOLOGY_LEVELS;
+    if (selectedSubject === "math") return MATH_LEVELS;
+    if (selectedSubject === "coding") return CODING_LEVELS;
+    return MATH_LEVELS; // Default to math
+  };
+  
+  const currentLevels = getCurrentLevels();
+  const [currentLevel, setCurrentLevel] = useState<Level>(currentLevels[0]);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [questionsCorrect, setQuestionsCorrect] = useState(0);
   const [rewardsData, setRewardsData] = useState({
@@ -83,7 +99,194 @@ const Index = () => {
       hasShield: false,
       doubleDamageActive: false
     });
-    toast.success(`${subject.charAt(0).toUpperCase() + subject.slice(1)} quest started!`);
+  };
+
+  const handleBackToMap = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+  };
+
+  const handleBattleshipComplete = () => {
+    // Mark the battleship level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('Battleship completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the battleship game
+    const coinsEarned = 50;
+    const xpEarned = 100;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`X-O O'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  };
+
+
+  const handleBiologyCaseStudyComplete = () => {
+    // Mark the biology case study level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('Biology case study completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the biology case study
+    const coinsEarned = 100;
+    const xpEarned = 200;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`Biologiya tadqiqoti tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  };
+
+  const handleBiologyMemoryMatchComplete = () => {
+    // Mark the biology memory match level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('Biology memory match completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the biology memory match
+    const coinsEarned = 80;
+    const xpEarned = 150;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`Xotira o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  };
+
+  const handleFlashQuizComplete = () => {
+    // Mark the flash quiz level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('Flash quiz completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the flash quiz
+    const coinsEarned = 60;
+    const xpEarned = 120;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`Flash Quiz tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  };
+
+  const handleFixTheBugComplete = () => {
+    // Mark the fix the bug level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('Fix the bug completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the fix the bug game
+    const coinsEarned = 90;
+    const xpEarned = 180;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`Xatolikni tuzatish tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  };
+
+  const handleTrueFalseCodeComplete = () => {
+    // Mark the true false code level as completed
+    setCompletedLevels(prev => {
+      const newCompleted = [...new Set([...prev, currentLevel.id])];
+      console.log('True false code completed, new completed levels:', newCompleted);
+      return newCompleted;
+    });
+    
+    // Award coins and XP for completing the true false code game
+    const coinsEarned = 70;
+    const xpEarned = 140;
+    
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map",
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coinsEarned,
+        xp: prev.player.xp + xpEarned
+      }
+    }));
+    
+    // Move to next level
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+    setCurrentLevelId(nextLevelId);
+    
+    toast.success(`To'g'ri yoki Noto'g'ri o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
   };
 
   const handleHome = () => {
@@ -133,6 +336,61 @@ const Index = () => {
     setCurrentLevel(level);
     setQuestionsAnswered(0);
     setQuestionsCorrect(0);
+    
+    // For biology case study levels, start the biology case study game
+    if (level.type === "biology-case-study") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "biology-case-study"
+      }));
+      return;
+    }
+    
+    // For biology memory match levels, start the biology memory match game
+    if (level.type === "biology-memory-match") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "biology-memory-match"
+      }));
+      return;
+    }
+    
+    // For flash quiz levels, start the flash quiz game
+    if (level.type === "flash-quiz") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "flash-quiz"
+      }));
+      return;
+    }
+    
+    // For fix the bug levels, start the fix the bug game
+    if (level.type === "fix-the-bug") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "fix-the-bug"
+      }));
+      return;
+    }
+    
+    // For true false code levels, start the true false code game
+    if (level.type === "true-false-code") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "true-false-code"
+      }));
+      return;
+    }
+    
+    // For battleship levels, start the strategic math battleship game
+    if (level.type === "battleship") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "battleship"
+      }));
+      return;
+    }
+    
     
     // For boss levels, set up boss battle
     if (level.type === "boss") {
@@ -327,7 +585,7 @@ const Index = () => {
     setCompletedLevels(prev => [...new Set([...prev, currentLevel.id])]);
     
     // Move to next level
-    const nextLevelId = Math.min(LEVELS.length, currentLevel.id + 1);
+    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
     setCurrentLevelId(nextLevelId);
   };
 
@@ -386,7 +644,7 @@ const Index = () => {
     <>
       {gameState.gamePhase === "map" && (
         <MapScreen
-          levels={LEVELS}
+          levels={currentLevels}
           currentLevelId={currentLevelId}
           completedLevels={completedLevels}
           onSelectLevel={handleSelectLevel}
@@ -395,6 +653,31 @@ const Index = () => {
           subject={selectedSubject}
         />
       )}
+      
+      {gameState.gamePhase === "biology-case-study" && (
+        <BiologyCaseStudy onLeave={handleBiologyCaseStudyComplete} />
+      )}
+      
+      {gameState.gamePhase === "biology-memory-match" && (
+        <BiologyMemoryMatch onLeave={handleBiologyMemoryMatchComplete} />
+      )}
+      
+      {gameState.gamePhase === "flash-quiz" && (
+        <FlashQuiz onLeave={handleFlashQuizComplete} />
+      )}
+      
+      {gameState.gamePhase === "fix-the-bug" && (
+        <FixTheBug onLeave={handleFixTheBugComplete} />
+      )}
+      
+      {gameState.gamePhase === "true-false-code" && (
+        <TrueFalseCodeGame onLeave={handleTrueFalseCodeComplete} />
+      )}
+      
+      {gameState.gamePhase === "battleship" && (
+        <StrategicMathBattleship onLeave={handleBattleshipComplete} />
+      )}
+      
       
       {gameState.gamePhase === "battle" && (
         <BattleScreen
