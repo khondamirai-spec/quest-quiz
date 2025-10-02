@@ -1,10 +1,70 @@
-import { Boss, Question } from "@/types/game";
+import { Boss, Question, Level } from "@/types/game";
+
+export const LEVELS: Level[] = [
+  // Test Levels
+  {
+    id: 1,
+    name: "Math Basics",
+    type: "test",
+    theme: "Mathematics",
+    difficulty: 1,
+    icon: "📚",
+    questionsRequired: 3
+  },
+  {
+    id: 2,
+    name: "Science Quiz",
+    type: "test",
+    theme: "Science",
+    difficulty: 1,
+    icon: "🔬",
+    questionsRequired: 3
+  },
+  {
+    id: 3,
+    name: "History Test",
+    type: "test",
+    theme: "History",
+    difficulty: 1,
+    icon: "📜",
+    questionsRequired: 3
+  },
+  {
+    id: 4,
+    name: "Geography",
+    type: "test",
+    theme: "Geography",
+    difficulty: 1,
+    icon: "🌍",
+    questionsRequired: 3
+  },
+  {
+    id: 5,
+    name: "General Knowledge",
+    type: "test",
+    theme: "General",
+    difficulty: 1,
+    icon: "🧠",
+    questionsRequired: 3
+  },
+  // Boss Level
+  {
+    id: 6,
+    name: "Dragon Boss",
+    type: "boss",
+    theme: "Final Boss",
+    difficulty: 2,
+    icon: "🐉",
+    maxHealth: 100,
+    damage: 20
+  }
+];
 
 export const BOSSES: Boss[] = [
   {
     id: 1,
     name: "Baby Dragon",
-    maxHealth: 100,
+    maxHealth: 60,
     damage: 10,
     theme: "Mathematics",
     difficulty: 1,
@@ -13,7 +73,7 @@ export const BOSSES: Boss[] = [
   {
     id: 2,
     name: "Young Dragon",
-    maxHealth: 150,
+    maxHealth: 80,
     damage: 15,
     theme: "Science",
     difficulty: 2,
@@ -22,7 +82,7 @@ export const BOSSES: Boss[] = [
   {
     id: 3,
     name: "Dragon Warrior",
-    maxHealth: 200,
+    maxHealth: 100,
     damage: 20,
     theme: "History",
     difficulty: 3,
@@ -31,7 +91,7 @@ export const BOSSES: Boss[] = [
   {
     id: 4,
     name: "Dragon Emperor",
-    maxHealth: 300,
+    maxHealth: 120,
     damage: 25,
     theme: "Final Boss",
     difficulty: 4,
@@ -118,6 +178,58 @@ export const QUESTIONS: Record<string, Question[]> = {
       category: "History"
     }
   ],
+  Geography: [
+    {
+      id: "geo1",
+      question: "What is the capital of France?",
+      answers: ["London", "Berlin", "Paris", "Madrid"],
+      correctAnswer: 2,
+      hint: "The city of lights",
+      category: "Geography"
+    },
+    {
+      id: "geo2",
+      question: "Which is the largest ocean on Earth?",
+      answers: ["Atlantic", "Indian", "Arctic", "Pacific"],
+      correctAnswer: 3,
+      hint: "It covers more than 30% of Earth's surface",
+      category: "Geography"
+    },
+    {
+      id: "geo3",
+      question: "What is the longest river in the world?",
+      answers: ["Amazon", "Nile", "Yangtze", "Mississippi"],
+      correctAnswer: 1,
+      hint: "It flows through Egypt",
+      category: "Geography"
+    }
+  ],
+  General: [
+    {
+      id: "gen1",
+      question: "How many continents are there?",
+      answers: ["5", "6", "7", "8"],
+      correctAnswer: 2,
+      hint: "Africa, Antarctica, Asia, Europe, North America, Oceania, South America",
+      category: "General"
+    },
+    {
+      id: "gen2",
+      question: "What is 2 + 2?",
+      answers: ["3", "4", "5", "6"],
+      correctAnswer: 1,
+      hint: "Basic arithmetic",
+      category: "General"
+    },
+    {
+      id: "gen3",
+      question: "How many days are in a year?",
+      answers: ["364", "365", "366", "360"],
+      correctAnswer: 1,
+      hint: "Not counting leap years",
+      category: "General"
+    }
+  ],
   "Final Boss": [
     {
       id: "final1",
@@ -133,6 +245,14 @@ export const QUESTIONS: Record<string, Question[]> = {
       answers: ["Michelangelo", "Raphael", "Leonardo da Vinci", "Donatello"],
       correctAnswer: 2,
       hint: "He was also an inventor and scientist",
+      category: "Final Boss"
+    },
+    {
+      id: "final3",
+      question: "What is the smallest prime number?",
+      answers: ["0", "1", "2", "3"],
+      correctAnswer: 2,
+      hint: "It's the only even prime number",
       category: "Final Boss"
     }
   ]

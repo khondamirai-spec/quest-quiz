@@ -7,6 +7,18 @@ export interface Question {
   category: string;
 }
 
+export interface Level {
+  id: number;
+  name: string;
+  type: "test" | "boss";
+  theme: string;
+  difficulty: number;
+  icon: string;
+  questionsRequired?: number; // For test levels
+  maxHealth?: number; // For boss levels
+  damage?: number; // For boss levels
+}
+
 export interface Boss {
   id: number;
   name: string;
@@ -17,6 +29,12 @@ export interface Boss {
   icon: string;
 }
 
+export interface Avatar {
+  id: number;
+  svg: React.ReactNode;
+  alt: string;
+}
+
 export interface Player {
   name: string;
   maxHealth: number;
@@ -24,6 +42,7 @@ export interface Player {
   coins: number;
   xp: number;
   level: number;
+  avatar?: Avatar;
 }
 
 export interface GameState {
@@ -33,7 +52,7 @@ export interface GameState {
   currentQuestion: Question | null;
   combo: number;
   timeLeft: number;
-  gamePhase: "map" | "battle" | "victory" | "defeat";
+  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection";
   powerUps: {
     heal: number;
     shield: number;

@@ -13,11 +13,11 @@ export const HealthBar = ({ current, max, type, className }: HealthBarProps) => 
   
   return (
     <div className={cn("w-full space-y-1", className)}>
-      <div className="flex justify-between text-sm font-bold">
+      <div className="flex justify-between text-xs sm:text-sm font-bold">
         <span className={type === "player" ? "text-player" : "text-boss"}>HP</span>
-        <span className="text-foreground">{current}/{max}</span>
+        <span className="text-foreground tabular-nums">{current}/{max}</span>
       </div>
-      <div className="relative h-6 bg-muted rounded-full overflow-hidden border-2 border-border">
+      <div className="relative h-5 sm:h-6 bg-muted rounded-full overflow-hidden border-2 border-border">
         <div
           className={cn(
             "h-full transition-all duration-500 ease-out",
