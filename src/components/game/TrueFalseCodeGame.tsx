@@ -21,7 +21,7 @@ interface TrueFalseQuestion {
 }
 
 interface TrueFalseCodeGameProps {
-  onLeave?: () => void;
+  onLeave?: (successRate?: number) => void;
 }
 
 export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
@@ -113,10 +113,10 @@ export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
         {/* Leave button */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400"
+            className="fixed top-4 left-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -129,7 +129,20 @@ export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 mt-16"
           >
-            <div className="text-8xl mb-6">🧠</div>
+            <motion.div 
+              className="text-8xl mb-6"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              🧠
+            </motion.div>
             <h1 className="text-6xl font-bold text-white mb-4">To'g'ri yoki Noto'g'ri</h1>
             <p className="text-xl text-gray-300">Python dasturlash bilimlarini sinab ko'ring!</p>
           </motion.div>
@@ -160,14 +173,16 @@ export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
             </Card>
           </div>
 
-          <Button 
-            onClick={startGame}
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white px-16 py-6 text-2xl"
-          >
-            <Code className="w-8 h-8 mr-3" />
-            Boshlash
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={startGame}
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white px-20 py-8 text-3xl md:px-24 md:py-10 md:text-4xl"
+            >
+              <Code className="w-8 h-8 mr-3" />
+              Boshlash
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -230,12 +245,12 @@ export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
             
             {onLeave && (
               <Button 
-                onClick={onLeave}
+                onClick={() => onLeave(percentage)}
                 size="lg"
                 className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
               >
                 <Home className="w-6 h-6 mr-2" />
-                Chiqish
+                Keyingi level
               </Button>
             )}
           </div>
@@ -249,10 +264,10 @@ export const TrueFalseCodeGame = ({ onLeave }: TrueFalseCodeGameProps) => {
       {/* Leave button */}
       {onLeave && (
         <Button 
-          onClick={onLeave}
+          onClick={() => onLeave()}
           variant="outline"
           size="sm"
-          className="absolute top-4 right-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-10"
+          className="fixed top-4 right-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"
         >
           <Home className="w-4 h-4 mr-1" />
           Chiqish

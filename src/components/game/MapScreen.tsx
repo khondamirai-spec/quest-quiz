@@ -9,6 +9,185 @@ import { useState, useEffect } from "react";
 import { Leaderboard } from "./Leaderboard";
 import { ExpandableTabs } from "@/components/ui/expandable-tabs";
 
+// Helper functions for icon animations
+const getIconAnimation = (icon: string) => {
+  switch (icon) {
+    case "🧠": // Brain/Memory
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, -5, 0]
+      };
+    case "🧬": // DNA
+      return {
+        scale: [1, 1.15, 1],
+        rotate: [0, 8, -8, 0],
+        y: [0, -3, 0]
+      };
+    case "🔬": // Microscope
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 3, -3, 0]
+      };
+    case "📜": // Scroll
+      return {
+        scale: [1, 1.05, 1],
+        rotate: [0, 2, -2, 0],
+        y: [0, -2, 0]
+      };
+    case "🌍": // Earth
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 10, -10, 0]
+      };
+    case "🗺️": // Map
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, -5, 0],
+        y: [0, -2, 0]
+      };
+    case "🎯": // Target
+      return {
+        scale: [1, 1.2, 1],
+        rotate: [0, 10, -10, 0]
+      };
+    case "⚡": // Lightning
+      return {
+        scale: [1, 1.3, 1],
+        rotate: [0, 15, -15, 0],
+        y: [0, -5, 0]
+      };
+    case "🐛": // Bug
+      return {
+        scale: [1, 1.2, 1],
+        rotate: [0, 12, -12, 0],
+        y: [0, -4, 0]
+      };
+    case "✅❌": // True/False
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, -5, 0]
+      };
+    case "🧪": // Test Tube
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 3, -3, 0],
+        y: [0, -2, 0]
+      };
+    case "🏛️": // Building
+      return {
+        scale: [1, 1.05, 1],
+        rotate: [0, 2, -2, 0],
+        y: [0, -1, 0]
+      };
+    case "🎓": // Graduation Cap
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 4, -4, 0],
+        y: [0, -3, 0]
+      };
+    case "🐉": // Dragon
+      return {
+        scale: [1, 1.15, 1],
+        rotate: [0, 8, -8, 0],
+        y: [0, -3, 0]
+      };
+    case "🐲": // Dragon 2
+      return {
+        scale: [1, 1.2, 1],
+        rotate: [0, 10, -10, 0],
+        y: [0, -4, 0]
+      };
+    case "🔥": // Fire
+      return {
+        scale: [1, 1.25, 1],
+        rotate: [0, 8, -8, 0],
+        y: [0, -6, 0]
+      };
+    case "👹": // Mutant Monster
+      return {
+        scale: [1, 1.2, 1],
+        rotate: [0, 10, -10, 0],
+        y: [0, -5, 0]
+      };
+    case "👑🐉": // Crown Dragon
+      return {
+        scale: [1, 1.1, 1],
+        rotate: [0, 6, -6, 0],
+        y: [0, -2, 0]
+      };
+    default:
+      return {
+        scale: [1, 1.05, 1],
+        rotate: [0, 3, -3, 0]
+      };
+  }
+};
+
+const getIconTransition = (icon: string) => {
+  switch (icon) {
+    case "⚡": // Lightning - fast
+      return {
+        duration: 1.2,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🔥": // Fire - fast
+      return {
+        duration: 1.5,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🐛": // Bug - bouncy
+      return {
+        duration: 2.2,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🧬": // DNA - smooth
+      return {
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🌍": // Earth - slow rotation
+      return {
+        duration: 4,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🗺️": // Map - medium
+      return {
+        duration: 2.5,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🧪": // Test Tube - gentle
+      return {
+        duration: 2.8,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🏛️": // Building - stable
+      return {
+        duration: 3.5,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    case "🎓": // Graduation Cap - celebratory
+      return {
+        duration: 2.2,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+    default:
+      return {
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut" as const
+      };
+  }
+};
+
 interface MapScreenProps {
   levels: Level[];
   currentLevelId: number;
@@ -85,10 +264,10 @@ export const MapScreen = ({
               {/* Navigation Bar */}
               <ExpandableTabs
                 tabs={[
-                  { title: "Home", icon: Home },
-                  { title: "Leaderboard", icon: Trophy },
-                  { title: "Guide", icon: BookOpen },
-                  { title: "Profile", icon: User },
+                  { title: "Bosh Sahifa", icon: Home },
+                  { title: "Reyting", icon: Trophy },
+                  { title: "Qo'llanma", icon: BookOpen },
+                  { title: "Profil", icon: User },
                 ]}
                 className="border-zinc-200 dark:border-zinc-700 bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shrink-0"
                 activeColor="text-emerald-600 dark:text-emerald-400"
@@ -108,15 +287,28 @@ export const MapScreen = ({
             <div className="relative space-y-6 pb-12">
               {levels.map((level, index) => {
                 const isCompleted = completedLevels.includes(level.id);
-                const isUnlocked = level.id <= currentLevelId;
-            const isLocked = !isUnlocked;
+                const isBoss = level.type === "boss" || level.type === "math-boss-battle" || level.type === "algoritm-qorovuli";
+                
+                // Special unlock logic for coding course boss (Algoritm Qorovuli)
+                let isUnlocked = false;
+                if (isBoss && level.type === "algoritm-qorovuli") {
+                  // Boss is only unlocked if level 3 is completed with 80%+ success
+                  isUnlocked = completedLevels.includes(3);
+                } else if (isBoss) {
+                  // Other boss levels are always unlocked
+                  isUnlocked = true;
+                } else {
+                  // Regular levels are unlocked if they're the current level or below
+                  isUnlocked = level.id <= currentLevelId;
+                }
+                
+                const isLocked = !isUnlocked;
                 const isCurrent = level.id === currentLevelId && !isCompleted;
-                const isBoss = level.type === "boss";
                 
                 // Alternate left and right positioning for decorative elements
                 const isLeft = index % 2 === 0;
 
-            return (
+                return (
                   <motion.div
                     key={level.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -158,9 +350,13 @@ export const MapScreen = ({
                         ) : isCompleted ? (
                           <CheckCircle className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white drop-shadow-lg" fill="currentColor" />
                         ) : (
-                          <span className="relative z-10 text-3xl sm:text-4xl md:text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] filter brightness-110 flex items-center justify-center">
+                          <motion.span 
+                            className="relative z-10 text-3xl sm:text-4xl md:text-5xl drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] filter brightness-110 flex items-center justify-center"
+                            animate={getIconAnimation(level.icon)}
+                            transition={getIconTransition(level.icon)}
+                          >
                             {level.icon}
-                          </span>
+                          </motion.span>
                         )}
                         
                         {/* Completion badge */}
@@ -313,8 +509,8 @@ export const MapScreen = ({
                       <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-white">How to Play</h2>
-                      <p className="text-xs sm:text-sm text-white/80">Game Guide</p>
+                      <h2 className="text-xl sm:text-2xl font-bold text-white">Qanday O'ynash</h2>
+                      <p className="text-xs sm:text-sm text-white/80">O'yin Qo'llanmasi</p>
                     </div>
                   </div>
                   <button
@@ -339,10 +535,10 @@ export const MapScreen = ({
                     <div className="text-3xl shrink-0">Ї</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Complete Lessons
+                        Darslarni Yakunlash
                       </h3>
                       <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        Progress through test levels by answering questions. Pass each level to unlock the next one!
+                        Savollarga javob berib test bosqichlaridan o'ting. Har bir bosqichni o'tib, keyingisini oching!
                       </p>
                     </div>
                   </motion.div>
@@ -357,10 +553,10 @@ export const MapScreen = ({
                     <div className="text-3xl shrink-0">рџђ‰</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Defeat Bosses
+                        Bosslarni Mag'lub Etish
                       </h3>
                       <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        Answer questions correctly to damage the boss. Wrong answers hurt you! Defeat the boss to win.
+                        Savollarga to'g'ri javob berib bossni jarohatlang. Noto'g'ri javoblar sizni jarohatlaydi! Bossni mag'lub etib g'alaba qozoning.
                       </p>
                     </div>
                   </motion.div>
@@ -375,10 +571,10 @@ export const MapScreen = ({
                     <div className="text-3xl shrink-0">рџ’°</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Earn Rewards
+                        Mukofotlar Topish
                       </h3>
                       <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        Gain coins and XP for correct answers. Build combos for bonus damage and unlock achievements!
+                        To'g'ri javoblar uchun tangalar va XP oling. Bonus zarar uchun kombinatsiyalar yarating va yutuqlarni oching!
                       </p>
                     </div>
                   </motion.div>
@@ -391,7 +587,7 @@ export const MapScreen = ({
                     className="p-3 bg-zinc-50 dark:bg-zinc-700/50 rounded-xl border border-zinc-200 dark:border-zinc-600"
                   >
                     <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-3">
-                      Stats Guide
+                      Statistika Qo'llanmasi
                     </h3>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
@@ -399,7 +595,7 @@ export const MapScreen = ({
                           <Flame className="w-4 h-4 text-orange-500" />
                         </div>
                         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">Streak:</span> Consecutive levels completed
+                          <span className="font-semibold text-zinc-800 dark:text-white">Ketma-ketlik:</span> Ketma-ket yakunlangan bosqichlar
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -407,7 +603,7 @@ export const MapScreen = ({
                           <Trophy className="w-4 h-4 text-yellow-600" />
                         </div>
                         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">Coins:</span> Currency earned from battles
+                          <span className="font-semibold text-zinc-800 dark:text-white">Tangalar:</span> Jangdan olingan valyuta
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -415,7 +611,7 @@ export const MapScreen = ({
                           <Zap className="w-4 h-4 text-blue-500" />
                         </div>
                         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">XP:</span> Experience points for leveling up
+                          <span className="font-semibold text-zinc-800 dark:text-white">XP:</span> Darajani oshirish uchun tajriba ballari
                         </p>
                       </div>
                     </div>
@@ -431,12 +627,12 @@ export const MapScreen = ({
                     <div className="text-3xl shrink-0">рџ’Ў</div>
                     <div>
                       <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Pro Tips
+                        Professional Maslahatlar
                       </h3>
                       <ul className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 space-y-1 list-disc list-inside">
-                        <li>Answer quickly for critical hits!</li>
-                        <li>Build a 3+ combo for special attacks</li>
-                        <li>Use power-ups strategically in boss battles</li>
+                        <li>Kritik zarbalar uchun tez javob bering!</li>
+                        <li>Maxsus hujumlar uchun 3+ kombinatsiya yarating</li>
+                        <li>Boss janglarida kuchaytiruvchilarni strategik ishlating</li>
                       </ul>
                     </div>
                   </motion.div>
@@ -476,8 +672,8 @@ export const MapScreen = ({
                         <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Leaderboard</h2>
-                        <p className="text-xs sm:text-sm text-white/80">Top Players</p>
+                        <h2 className="text-xl sm:text-2xl font-bold text-white">Reyting</h2>
+                        <p className="text-xs sm:text-sm text-white/80">Eng Yaxshi O'yinchilar</p>
                       </div>
                     </div>
                     <button
@@ -527,8 +723,8 @@ export const MapScreen = ({
                         <User className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Profile</h2>
-                        <p className="text-xs sm:text-sm text-white/80">Player Stats</p>
+                        <h2 className="text-xl sm:text-2xl font-bold text-white">Profil</h2>
+                        <p className="text-xs sm:text-sm text-white/80">O'yinchi Statistikasi</p>
                       </div>
                     </div>
                     <button
@@ -550,7 +746,7 @@ export const MapScreen = ({
                       </div>
                       <div className="text-center">
                         <h3 className="text-xl font-bold text-zinc-800 dark:text-white">{player?.name || "Hero"}</h3>
-                        <p className="text-sm text-zinc-500">Level {player?.level || 1}</p>
+                        <p className="text-sm text-zinc-500">Daraja {player?.level || 1}</p>
                       </div>
                     </div>
 
@@ -559,29 +755,29 @@ export const MapScreen = ({
                       <div className="p-4 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
                         <div className="text-2xl mb-1">рџ’°</div>
                         <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-500">{player?.coins || 0}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Coins</p>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Tangalar</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
                         <div className="text-2xl mb-1">в­ђ</div>
                         <p className="text-2xl font-bold text-blue-700 dark:text-blue-500">{player?.xp || 0}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">XP</p>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Tajriba</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-800">
                         <div className="text-2xl mb-1">Ї</div>
                         <p className="text-2xl font-bold text-green-700 dark:text-green-500">{completedCount}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Completed</p>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Yakunlangan</p>
                       </div>
                       <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-800">
                         <div className="text-2xl mb-1">рџ”Ґ</div>
                         <p className="text-2xl font-bold text-orange-700 dark:text-orange-500">{streak}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Streak</p>
+                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Ketma-ketlik</p>
                       </div>
                     </div>
 
                     {/* Progress Bar */}
                     <div className="p-4 bg-zinc-50 dark:bg-zinc-700/50 rounded-xl border border-zinc-200 dark:border-zinc-600">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Progress</span>
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Jarayon</span>
                         <span className="text-sm font-bold text-zinc-800 dark:text-white">{Math.round(progressPercentage)}%</span>
                       </div>
                       <div className="w-full h-3 bg-zinc-200 dark:bg-zinc-600 rounded-full overflow-hidden">
@@ -593,7 +789,7 @@ export const MapScreen = ({
                         />
                       </div>
                       <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
-                        {completedCount} of {totalLevels} levels completed
+                        {completedCount} ta {totalLevels} bosqichdan yakunlangan
                       </p>
                     </div>
 
@@ -601,7 +797,7 @@ export const MapScreen = ({
                     <div className="p-4 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border border-red-200 dark:border-red-800">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-xl">вќ¤пёЏ</span>
-                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Health</span>
+                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Salomatlik</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-2 bg-red-200 dark:bg-red-900/50 rounded-full overflow-hidden">

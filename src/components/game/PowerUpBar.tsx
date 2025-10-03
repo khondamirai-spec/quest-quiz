@@ -19,10 +19,10 @@ interface PowerUpBarProps {
 
 export const PowerUpBar = ({ powerUps, onUsePowerUp, disabled }: PowerUpBarProps) => {
   const powerUpsList: PowerUp[] = [
-    { type: "heal", count: powerUps.heal, icon: Heart, label: "Heal" },
-    { type: "shield", count: powerUps.shield, icon: Shield, label: "Shield" },
-    { type: "timeFreeze", count: powerUps.timeFreeze, icon: Clock, label: "Freeze" },
-    { type: "doubleDamage", count: powerUps.doubleDamage, icon: Zap, label: "2x DMG" },
+    { type: "heal", count: powerUps.heal, icon: Heart, label: "Davolash" },
+    { type: "shield", count: powerUps.shield, icon: Shield, label: "Qalqon" },
+    { type: "timeFreeze", count: powerUps.timeFreeze, icon: Clock, label: "Muzlatish" },
+    { type: "doubleDamage", count: powerUps.doubleDamage, icon: Zap, label: "2x Zarar" },
   ];
 
   return (

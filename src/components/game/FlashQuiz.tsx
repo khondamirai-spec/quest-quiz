@@ -21,7 +21,7 @@ interface QuizQuestion {
 }
 
 interface FlashQuizProps {
-  onLeave?: () => void;
+  onLeave?: (successRate?: number) => void;
 }
 
 export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
@@ -146,7 +146,7 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
             onClick={onLeave}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400"
+            className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -159,7 +159,21 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 mt-16"
           >
-            <div className="text-8xl mb-6">⚡</div>
+            <motion.div 
+              className="text-8xl mb-6"
+              animate={{ 
+                scale: [1, 1.3, 1],
+                rotate: [0, 15, -15, 0],
+                y: [0, -10, 0]
+              }}
+              transition={{ 
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              ⚡
+            </motion.div>
             <h1 className="text-6xl font-bold text-white mb-4">Flash Quiz</h1>
             <p className="text-xl text-gray-300">Matematik savollar bilan tezlik sinovi!</p>
           </motion.div>
@@ -190,14 +204,16 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
             </Card>
           </div>
 
-          <Button 
-            onClick={startGame}
-            size="lg"
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-16 py-6 text-2xl"
-          >
-            <Play className="w-8 h-8 mr-3" />
-            Boshlash
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={startGame}
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-20 py-8 text-3xl md:px-24 md:py-10 md:text-4xl"
+            >
+              <Play className="w-8 h-8 mr-3" />
+              Boshlash
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -257,12 +273,12 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
             
             {onLeave && (
               <Button 
-                onClick={onLeave}
+                onClick={() => onLeave(percentage)}
                 size="lg"
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               >
                 <Home className="w-6 h-6 mr-2" />
-                Chiqish
+                Keyingi level
               </Button>
             )}
           </div>
@@ -279,7 +295,7 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
           onClick={onLeave}
           variant="outline"
           size="sm"
-          className="absolute top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-10"
+          className="fixed top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
         >
           <Home className="w-4 h-4 mr-1" />
           Chiqish

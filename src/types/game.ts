@@ -10,7 +10,7 @@ export interface Question {
 export interface Level {
   id: number;
   name: string;
-  type: "test" | "boss" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "flash-quiz" | "fix-the-bug" | "true-false-code";
+  type: "test" | "boss" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "biology-sorting" | "mutant-monster-battle" | "flash-quiz" | "fix-the-bug" | "true-false-code" | "code-matching" | "equation-builder" | "math-boss-battle" | "algoritm-qorovuli";
   theme: string;
   difficulty: number;
   icon: string;
@@ -52,7 +52,7 @@ export interface GameState {
   currentQuestion: Question | null;
   combo: number;
   timeLeft: number;
-  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "flash-quiz" | "fix-the-bug" | "true-false-code";
+  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "biology-sorting" | "mutant-monster-battle" | "flash-quiz" | "fix-the-bug" | "true-false-code" | "code-matching" | "equation-builder" | "math-boss-battle" | "algoritm-qorovuli";
   powerUps: {
     heal: number;
     shield: number;

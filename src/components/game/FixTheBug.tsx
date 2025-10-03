@@ -23,7 +23,7 @@ interface BugCode {
 }
 
 interface FixTheBugProps {
-  onLeave?: () => void;
+  onLeave?: (successRate?: number) => void;
 }
 
 export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
@@ -136,7 +136,7 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
             onClick={onLeave}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400"
+            className="fixed top-4 left-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -149,7 +149,21 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 mt-16"
           >
-            <div className="text-8xl mb-6">🐛</div>
+            <motion.div 
+              className="text-8xl mb-6"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 12, -12, 0],
+                y: [0, -8, 0]
+              }}
+              transition={{ 
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              🐛
+            </motion.div>
             <h1 className="text-6xl font-bold text-white mb-4">Xatolikni Tuzatish</h1>
             <p className="text-xl text-gray-300">Kod xatolarini toping va tuzating!</p>
           </motion.div>
@@ -180,14 +194,16 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
             </Card>
           </div>
 
-          <Button 
-            onClick={startGame}
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white px-16 py-6 text-2xl"
-          >
-            <Code className="w-8 h-8 mr-3" />
-            Boshlash
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={startGame}
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white px-20 py-8 text-3xl md:px-24 md:py-10 md:text-4xl"
+            >
+              <Code className="w-8 h-8 mr-3" />
+              Boshlash
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -250,12 +266,12 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
             
             {onLeave && (
               <Button 
-                onClick={onLeave}
+                onClick={() => onLeave(percentage)}
                 size="lg"
                 className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
               >
                 <Home className="w-6 h-6 mr-2" />
-                Chiqish
+                Keyingi level
               </Button>
             )}
           </div>
@@ -265,14 +281,14 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-900 to-purple-900 p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-900 to-purple-900 p-2 sm:p-4 relative">
       {/* Leave button */}
       {onLeave && (
         <Button 
           onClick={onLeave}
           variant="outline"
           size="sm"
-          className="absolute top-4 right-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-10"
+          className="fixed top-4 right-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"
         >
           <Home className="w-4 h-4 mr-1" />
           Chiqish
@@ -281,13 +297,13 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
 
       <div className="max-w-4xl mx-auto">
         {/* Header Stats */}
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex gap-4">
-            <Badge variant="outline" className="text-white border-purple-600">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+          <div className="flex flex-wrap gap-2 sm:gap-4">
+            <Badge variant="outline" className="text-white border-purple-600 text-sm">
               <Bug className="w-4 h-4 mr-1" />
               Xatolik: {currentBugIndex + 1}/{bugCodes.length}
             </Badge>
-            <Badge variant="outline" className="text-white border-purple-600">
+            <Badge variant="outline" className="text-white border-purple-600 text-sm">
               <Trophy className="w-4 h-4 mr-1" />
               Tuzatilgan: {bugsFixed}
             </Badge>
@@ -295,9 +311,9 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
         </div>
 
         {/* Game Title */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Xatolikni Tuzatish</h1>
-          <p className="text-lg text-gray-300">Kod xatolarini toping va to'g'ri kodni yozing</p>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">Xatolikni Tuzatish</h1>
+          <p className="text-base sm:text-lg text-gray-300">Kod xatolarini toping va to'g'ri kodni yozing</p>
         </div>
 
         {/* Bug Code Display */}
@@ -322,8 +338,8 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
                 <h3 className="text-xl font-bold text-white mb-4 text-center">
                   Xatolikli kod:
                 </h3>
-                <div className="bg-gray-900 p-6 rounded-lg border-2 border-red-500">
-                  <code className="text-red-300 text-xl font-mono">
+                <div className="bg-gray-900 p-4 sm:p-6 rounded-lg border-2 border-red-500">
+                  <code className="text-red-300 text-lg sm:text-xl font-mono break-all">
                     {currentBug.brokenCode}
                   </code>
                 </div>
@@ -333,31 +349,44 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
                 <h3 className="text-xl font-bold text-white mb-4 text-center">
                   To'g'ri kodni yozing:
                 </h3>
-                <div className="flex gap-4">
+                
+                {/* Clear instruction with arrow pointing to input */}
+                <div className="text-center mb-4">
+                  <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500 rounded-lg px-4 py-2">
+                    <span className="text-blue-300 text-lg">⬇️</span>
+                    <span className="text-blue-200 font-semibold">Bu yerga javobingizni yozing</span>
+                  </div>
+                </div>
+
+                {/* Input area - better mobile layout */}
+                <div className="space-y-4">
                   <Input
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="To'g'ri kodni bu yerga yozing..."
-                    className="flex-1 text-lg font-mono bg-gray-900 border-purple-500 text-white placeholder-gray-400"
+                    placeholder="Bu yerga to'g'ri kodni yozing..."
+                    className="w-full text-lg font-mono bg-gray-900 border-2 border-purple-500 text-white placeholder-gray-400 h-14 px-4 text-center"
                     disabled={showResult}
                   />
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={!userInput.trim() || showResult}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-8"
-                  >
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    Yuborish
-                  </Button>
-                  <Button
-                    onClick={() => setShowHint(!showHint)}
-                    variant="outline"
-                    className="border-yellow-500 text-yellow-300 hover:bg-yellow-500/20 hover:text-yellow-200 px-6"
-                  >
-                    💡
-                    {showHint ? ' Yashirish' : ' Maslahat'}
-                  </Button>
+                  
+                  {/* Buttons in mobile-friendly layout */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={handleSubmit}
+                      disabled={!userInput.trim() || showResult}
+                      className="flex-1 bg-purple-600 hover:bg-purple-700 text-white h-12 text-lg font-semibold"
+                    >
+                      <CheckCircle className="w-5 h-5 mr-2" />
+                      Javobni Yuborish
+                    </Button>
+                    <Button
+                      onClick={() => setShowHint(!showHint)}
+                      variant="outline"
+                      className="flex-1 sm:flex-none border-yellow-500 text-yellow-300 hover:bg-yellow-500/20 hover:text-yellow-200 h-12 text-lg"
+                    >
+                      💡 {showHint ? 'Maslahatni Yashirish' : 'Maslahat Ko\'rish'}
+                    </Button>
+                  </div>
                 </div>
               </div>
 

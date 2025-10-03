@@ -22,52 +22,25 @@ export const BIOLOGY_LEVELS: Level[] = [
     icon: "🧬",
     questionsRequired: 5
   },
+  // Biology Sorting Game - Third level for Biology course
   {
     id: 3,
-    name: "Science Quiz",
-    type: "test",
-    theme: "Science",
+    name: "Saralash O'yini",
+    type: "biology-sorting",
+    theme: "Biology",
     difficulty: 1,
-    icon: "🔬",
-    questionsRequired: 3
+    icon: "📋",
+    questionsRequired: 12
   },
+  // Mutant Monster Battle - Final level for Biology course
   {
     id: 4,
-    name: "History Test",
-    type: "test",
-    theme: "History",
-    difficulty: 1,
-    icon: "📜",
-    questionsRequired: 3
-  },
-  {
-    id: 5,
-    name: "Geography",
-    type: "test",
-    theme: "Geography",
-    difficulty: 1,
-    icon: "🌍",
-    questionsRequired: 3
-  },
-  {
-    id: 6,
-    name: "General Knowledge",
-    type: "test",
-    theme: "General",
-    difficulty: 1,
-    icon: "🧠",
-    questionsRequired: 3
-  },
-  // Boss Level
-  {
-    id: 7,
-    name: "Dragon Boss",
-    type: "boss",
-    theme: "Final Boss",
+    name: "Mutant Monster Jang",
+    type: "mutant-monster-battle",
+    theme: "Biology",
     difficulty: 2,
-    icon: "🐉",
-    maxHealth: 100,
-    damage: 20
+    icon: "👹",
+    questionsRequired: 8
   }
 ];
 
@@ -93,52 +66,25 @@ export const MATH_LEVELS: Level[] = [
     icon: "⚡",
     questionsRequired: 8
   },
+  // Equation Builder - Third level for Math course
   {
     id: 3,
-    name: "Science Quiz",
-    type: "test",
-    theme: "Science",
+    name: "Tenglama Yig'uvchi",
+    type: "equation-builder",
+    theme: "Mathematics",
     difficulty: 1,
-    icon: "🔬",
-    questionsRequired: 3
+    icon: "🧮",
+    questionsRequired: 5
   },
+  // Math Boss Battle - Final level for Math course
   {
     id: 4,
-    name: "History Test",
-    type: "test",
-    theme: "History",
-    difficulty: 1,
-    icon: "📜",
-    questionsRequired: 3
-  },
-  {
-    id: 5,
-    name: "Geography",
-    type: "test",
-    theme: "Geography",
-    difficulty: 1,
-    icon: "🌍",
-    questionsRequired: 3
-  },
-  {
-    id: 6,
-    name: "General Knowledge",
-    type: "test",
-    theme: "General",
-    difficulty: 1,
-    icon: "🧠",
-    questionsRequired: 3
-  },
-  // Boss Level
-  {
-    id: 7,
-    name: "Dragon Boss",
-    type: "boss",
-    theme: "Final Boss",
+    name: "Matematik Boss Jangi",
+    type: "math-boss-battle",
+    theme: "Mathematics",
     difficulty: 2,
-    icon: "🐉",
-    maxHealth: 100,
-    damage: 20
+    icon: "⚔️",
+    questionsRequired: 7
   }
 ];
 
@@ -164,52 +110,25 @@ export const CODING_LEVELS: Level[] = [
     icon: "✅❌",
     questionsRequired: 5
   },
+  // Code Matching Game - Third level for Coding course
   {
     id: 3,
-    name: "Science Quiz",
-    type: "test",
-    theme: "Science",
+    name: "Kod → Natija Moslashtirish",
+    type: "code-matching",
+    theme: "Coding",
     difficulty: 1,
-    icon: "🔬",
-    questionsRequired: 3
+    icon: "🔗",
+    questionsRequired: 6
   },
+  // Algoritm Qorovuli - Final boss for Coding course
   {
     id: 4,
-    name: "History Test",
-    type: "test",
-    theme: "History",
-    difficulty: 1,
-    icon: "📜",
-    questionsRequired: 3
-  },
-  {
-    id: 5,
-    name: "Geography",
-    type: "test",
-    theme: "Geography",
-    difficulty: 1,
-    icon: "🌍",
-    questionsRequired: 3
-  },
-  {
-    id: 6,
-    name: "General Knowledge",
-    type: "test",
-    theme: "General",
-    difficulty: 1,
-    icon: "🧠",
-    questionsRequired: 3
-  },
-  // Boss Level
-  {
-    id: 7,
-    name: "Dragon Boss",
-    type: "boss",
-    theme: "Final Boss",
-    difficulty: 2,
-    icon: "🐉",
-    maxHealth: 100,
-    damage: 20
+    name: "Algoritm Qorovuli",
+    type: "algoritm-qorovuli",
+    theme: "Coding",
+    difficulty: 3,
+    icon: "🛡️",
+    questionsRequired: 8
   }
 ];
 

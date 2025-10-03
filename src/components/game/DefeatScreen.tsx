@@ -15,13 +15,13 @@ export const DefeatScreen = ({ bossName, onRetry, onBackToMap }: DefeatScreenPro
         <div className="text-center space-y-3 md:space-y-4">
           <Skull className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 text-destructive mx-auto animate-pulse" />
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-destructive text-glow">
-            DEFEATED
+            MAG'LUBIYAT
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground">
-            {bossName} was too powerful...
+            {bossName} juda kuchli edi...
           </p>
           <p className="text-sm md:text-base lg:text-lg text-muted-foreground">
-            You've been sent back to the beginning. Train harder and try again!
+            Siz boshidan boshlashga qaytardingiz. Ko'proq mashq qiling va qaytadan urinib ko'ring!
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export const DefeatScreen = ({ bossName, onRetry, onBackToMap }: DefeatScreenPro
             variant="destructive"
             className="flex-1 text-lg md:text-xl font-bold"
           >
-            Retry Boss
+            Qayta urinish
           </Button>
           <Button
             onClick={onBackToMap}
@@ -40,7 +40,7 @@ export const DefeatScreen = ({ bossName, onRetry, onBackToMap }: DefeatScreenPro
             variant="outline"
             className="flex-1 text-lg md:text-xl font-bold border-2"
           >
-            Back to Map
+            Xaritaga qaytish
           </Button>
         </div>
       </Card>

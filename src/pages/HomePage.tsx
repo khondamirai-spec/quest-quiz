@@ -13,32 +13,32 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
   const subjects = [
     {
       id: "math",
-      name: "Mathematics",
+      name: "Matematika",
       icon: "∑",
       color: "from-blue-600 via-cyan-500 to-teal-600",
       hoverColor: "from-blue-700 via-cyan-600 to-teal-700",
       glowColor: "shadow-blue-500/50",
-      description: "Numbers, equations & logic",
+      description: "Sonlar, tenglamalar va mantiq",
       accent: "bg-blue-500/20",
     },
     {
       id: "biology",
-      name: "Biology",
+      name: "Biologiya",
       icon: "🧬",
       color: "from-emerald-600 via-green-500 to-lime-600",
       hoverColor: "from-emerald-700 via-green-600 to-lime-700",
       glowColor: "shadow-emerald-500/50",
-      description: "Life science & organisms",
+      description: "Hayot fanlari va organizmlar",
       accent: "bg-emerald-500/20",
     },
     {
       id: "coding",
-      name: "Coding",
+      name: "Dasturlash",
       icon: "</>",
       color: "from-purple-600 via-violet-500 to-fuchsia-600",
       hoverColor: "from-purple-700 via-violet-600 to-fuchsia-700",
       glowColor: "shadow-purple-500/50",
-      description: "Programming & algorithms",
+      description: "Dasturlash va algoritmlar",
       accent: "bg-purple-500/20",
     },
   ];
@@ -179,7 +179,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
           >
             <img 
               src="/logo.png" 
-              alt="Quiz Quest Logo" 
+              alt="Quiz Quest Logosi" 
               className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain"
             />
           </motion.div>
@@ -202,7 +202,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
             transition={{ delay: 0.3, duration: 0.8 }}
             className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-2"
           >
-            Learn. Battle. Conquer.
+            O'rganish. Jang qilish. G'alaba qilish.
           </motion.p>
 
           <motion.div
@@ -213,15 +213,15 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
           >
             <span className="flex items-center gap-1">
               <Trophy className="w-4 h-4 text-yellow-500" />
-              Epic Battles
+              Epik Janglar
             </span>
             <span className="flex items-center gap-1">
               <Zap className="w-4 h-4 text-blue-500" />
-              Power-Ups
+              Kuchaytirgichlar
             </span>
             <span className="flex items-center gap-1">
               <Star className="w-4 h-4 text-purple-500" />
-              Achievements
+              Yutuqlar
             </span>
           </motion.div>
         </motion.div>
@@ -234,7 +234,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
           className="w-full max-w-5xl"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-8">
-            Choose Your Quest
+            O'zingizning Questingizni Tanlang
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
@@ -379,7 +379,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
                         }
                         transition={{ duration: 0.6, repeat: Infinity }}
                       >
-                        <span className="text-sm font-semibold tracking-wide">Start Quest</span>
+                        <span className="text-sm font-semibold tracking-wide">Questni Boshlash</span>
                         <motion.span 
                           className="text-xl"
                           animate={
@@ -414,7 +414,7 @@ export const HomePage = ({ onSelectSubject }: HomePageProps) => {
           transition={{ delay: 1.5, duration: 0.8 }}
           className="mt-12 text-center text-gray-400 text-sm"
         >
-          <p>Answer questions correctly to defeat bosses and earn rewards!</p>
+          <p>Savollarga to'g'ri javob bering va bosslarni mag'lub eting va mukofotlar oling!</p>
         </motion.div>
       </div>
     </div>

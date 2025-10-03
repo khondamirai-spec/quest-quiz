@@ -54,7 +54,7 @@ export const BattleScreen = ({
         }
         if (prev === 5 && !showHint) {
           setShowHint(true);
-          toast.info("Hint revealed! Timer extended.");
+          toast.info("Maslahat ochildi! Vaqt uzaytirildi.");
           return 7;
         }
         return prev - 1;
@@ -99,13 +99,13 @@ export const BattleScreen = ({
       setFlash(true);
       const isCritical = timeBonus > 10;
       if (isCritical) {
-        toast.success("🔥 CRITICAL HIT!");
+        toast.success("🔥 KRITIK ZARB!");
       }
     } else {
       setBossAttacking(true);
       setPlayerHurt(true);
       setFlash(true);
-      toast.error("Wrong answer!");
+      toast.error("Noto'g'ri javob!");
     }
     
     setTimeout(() => setFlash(false), 500);
@@ -149,7 +149,7 @@ export const BattleScreen = ({
   };
 
   if (!gameState.currentQuestion) {
-    return <div className="text-center text-2xl">Loading next question...</div>;
+    return <div className="text-center text-2xl">Keyingi savol yuklanmoqda...</div>;
   }
 
   const specialAttackReady = gameState.combo >= 3;
@@ -234,7 +234,7 @@ export const BattleScreen = ({
               className="bg-red-50 hover:bg-red-100 border-red-200 text-red-700 hover:text-red-800"
             >
               <X className="w-4 h-4 mr-1" />
-              Leave
+              Chiqish
             </Button>
           </div>
         </div>
@@ -323,22 +323,22 @@ export const BattleScreen = ({
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-500" />
-              Leave Game?
+              O'yindan chiqish?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to leave this battle? Your progress for this game will be lost and you'll need to start over.
+              Bu jangdan chiqishni xohlaysizmi? Bu o'yin uchun barcha taraqqiyot yo'qoladi va qaytadan boshlash kerak bo'ladi.
               <br /><br />
-              <strong>This includes:</strong>
+              <strong>Bunga quyidagilar kiradi:</strong>
               <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Current health and progress</li>
-                <li>Questions answered so far</li>
-                <li>Power-ups used</li>
-                <li>Combo streaks</li>
+                <li>Joriy sog'lik va taraqqiyot</li>
+                <li>Javob berilgan savollar</li>
+                <li>Ishlatilgan kuchaytirgichlar</li>
+                <li>Kombinatsiya seriyalari</li>
               </ul>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Stay in Game</AlertDialogCancel>
+            <AlertDialogCancel>O'yinda qolish</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 setShowLeaveDialog(false);
@@ -346,7 +346,7 @@ export const BattleScreen = ({
               }}
               className="bg-red-600 hover:bg-red-700"
             >
-              Leave Game
+              O'yindan chiqish
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -20,7 +20,7 @@ interface MemoryCard {
 }
 
 interface BiologyMemoryMatchProps {
-  onLeave?: () => void;
+  onLeave?: (successRate?: number) => void;
 }
 
 export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
@@ -161,7 +161,7 @@ export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
             onClick={onLeave}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400"
+            className="fixed top-4 left-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -174,7 +174,20 @@ export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 mt-16"
           >
-            <div className="text-8xl mb-6">🧠</div>
+            <motion.div 
+              className="text-8xl mb-6"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              🧠
+            </motion.div>
             <h1 className="text-6xl font-bold text-white mb-4">Xotira O'yini</h1>
             <p className="text-xl text-gray-300">Biologiya atamalarini yodlang!</p>
           </motion.div>
@@ -205,14 +218,16 @@ export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
             </Card>
           </div>
 
-          <Button 
-            onClick={startGame}
-            size="lg"
-            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-16 py-6 text-2xl"
-          >
-            <Brain className="w-8 h-8 mr-3" />
-            Boshlash
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={startGame}
+              size="lg"
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-20 py-8 text-3xl md:px-24 md:py-10 md:text-4xl"
+            >
+              <Brain className="w-8 h-8 mr-3" />
+              Boshlash
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -269,12 +284,12 @@ export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
             
             {onLeave && (
               <Button 
-                onClick={onLeave}
+                onClick={() => onLeave(100)} // Memory match completion = 100% success
                 size="lg"
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               >
                 <Home className="w-6 h-6 mr-2" />
-                Chiqish
+                Keyingi level
               </Button>
             )}
           </div>
@@ -291,7 +306,7 @@ export const BiologyMemoryMatch = ({ onLeave }: BiologyMemoryMatchProps) => {
           onClick={onLeave}
           variant="outline"
           size="sm"
-          className="absolute top-4 right-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400 z-10"
+          className="fixed top-4 right-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400 z-50 shadow-lg"
         >
           <Home className="w-4 h-4 mr-1" />
           Chiqish

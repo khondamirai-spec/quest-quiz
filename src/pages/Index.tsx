@@ -7,9 +7,15 @@ import { DefeatScreen } from "@/components/game/DefeatScreen";
 import StrategicMathBattleship from "@/components/game/StrategicMathBattleship";
 import BiologyCaseStudy from "@/components/game/BiologyCaseStudy";
 import BiologyMemoryMatch from "@/components/game/BiologyMemoryMatch";
+import BiologySortingGame from "@/components/game/BiologySortingGame";
+import MutantMonsterBattle from "@/components/game/MutantMonsterBattle";
 import FlashQuiz from "@/components/game/FlashQuiz";
 import FixTheBug from "@/components/game/FixTheBug";
 import TrueFalseCodeGame from "@/components/game/TrueFalseCodeGame";
+import CodeMatchingGame from "@/components/game/CodeMatchingGame";
+import EquationBuilder from "@/components/game/EquationBuilder";
+import { MathBossBattle } from "@/components/game/MathBossBattle";
+import AlgoritmQorovuli from "@/components/game/AlgoritmQorovuli";
 import { GameState, Boss, Question, Level } from "@/types/game";
 import { LEVELS, BIOLOGY_LEVELS, MATH_LEVELS, CODING_LEVELS, BOSSES, QUESTIONS } from "@/data/gameData";
 import { PowerUpType } from "@/components/game/PowerUpBar";
@@ -108,185 +114,492 @@ const Index = () => {
     }));
   };
 
-  const handleBattleshipComplete = () => {
-    // Mark the battleship level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('Battleship completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the battleship game
-    const coinsEarned = 50;
-    const xpEarned = 100;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
-      }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`X-O O'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  const handleBattleshipComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Battleship completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the battleship game
+      const coinsEarned = 50;
+      const xpEarned = 100;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`X-O O'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
   };
 
 
-  const handleBiologyCaseStudyComplete = () => {
-    // Mark the biology case study level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('Biology case study completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the biology case study
-    const coinsEarned = 100;
-    const xpEarned = 200;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
-      }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`Biologiya tadqiqoti tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  const handleBiologyCaseStudyComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Biology case study completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the biology case study
+      const coinsEarned = 100;
+      const xpEarned = 200;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Biologiya tadqiqoti tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
   };
 
-  const handleBiologyMemoryMatchComplete = () => {
-    // Mark the biology memory match level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('Biology memory match completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the biology memory match
-    const coinsEarned = 80;
-    const xpEarned = 150;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
-      }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`Xotira o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  const handleBiologyMemoryMatchComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Biology memory match completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the biology memory match
+      const coinsEarned = 80;
+      const xpEarned = 150;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Xotira o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
   };
 
-  const handleFlashQuizComplete = () => {
-    // Mark the flash quiz level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('Flash quiz completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the flash quiz
-    const coinsEarned = 60;
-    const xpEarned = 120;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
-      }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`Flash Quiz tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  const handleBiologySortingComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Biology sorting completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the biology sorting game
+      const coinsEarned = 90;
+      const xpEarned = 180;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Biologiya saralash o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
   };
 
-  const handleFixTheBugComplete = () => {
-    // Mark the fix the bug level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('Fix the bug completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the fix the bug game
-    const coinsEarned = 90;
-    const xpEarned = 180;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
-      }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`Xatolikni tuzatish tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+  const handleMutantMonsterBattleComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher (victory)
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Mutant Monster Battle completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the mutant monster battle
+      const coinsEarned = 150;
+      const xpEarned = 300;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Mutant Monster mag'lub qilindi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to defeat monster - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Mutant sizni mag'lub qildi! Yana urinib ko'ring!");
+    }
   };
 
-  const handleTrueFalseCodeComplete = () => {
-    // Mark the true false code level as completed
-    setCompletedLevels(prev => {
-      const newCompleted = [...new Set([...prev, currentLevel.id])];
-      console.log('True false code completed, new completed levels:', newCompleted);
-      return newCompleted;
-    });
-    
-    // Award coins and XP for completing the true false code game
-    const coinsEarned = 70;
-    const xpEarned = 140;
-    
-    setGameState(prev => ({
-      ...prev,
-      gamePhase: "map",
-      player: {
-        ...prev.player,
-        coins: prev.player.coins + coinsEarned,
-        xp: prev.player.xp + xpEarned
+  const handleFlashQuizComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Flash quiz completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the flash quiz
+      const coinsEarned = 60;
+      const xpEarned = 120;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Flash Quiz tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+  const handleEquationBuilderComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Equation builder completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the equation builder
+      const coinsEarned = 70;
+      const xpEarned = 140;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Tenglama yig'uvchi o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+  const handleFixTheBugComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Fix the bug completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the fix the bug game
+      const coinsEarned = 90;
+      const xpEarned = 180;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Xatolikni tuzatish tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+  const handleTrueFalseCodeComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('True false code completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the true false code game
+      const coinsEarned = 70;
+      const xpEarned = 140;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`To'g'ri yoki Noto'g'ri o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+  const handleCodeMatchingComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Code matching completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the code matching game
+      const coinsEarned = 100;
+      const xpEarned = 200;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Special logic for coding course level 3 - unlock boss after completion
+      if (selectedSubject === "coding" && currentLevel.id === 3) {
+        // Don't advance to next level, boss will be unlocked via MapScreen logic
+        console.log('Level 3 completed with 80%+, boss should now be unlocked');
+        toast.success(`Kod moslashtirish tugadi! +${coinsEarned} tanga, +${xpEarned} XP! Boss ochildi!`);
+      } else {
+        // Move to next level only if performance was good
+        const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+        console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+        setCurrentLevelId(nextLevelId);
+        
+        toast.success(`Kod moslashtirish tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
       }
-    }));
-    
-    // Move to next level
-    const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
-    console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
-    setCurrentLevelId(nextLevelId);
-    
-    toast.success(`To'g'ri yoki Noto'g'ri o'yini tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+
+  const handleAlgoritmQorovuliComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Algoritm Qorovuli completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the final boss
+      const coinsEarned = 200;
+      const xpEarned = 500;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Algoritm Qorovuli mag'lub qilindi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
+  };
+
+  const handleMathBossBattleComplete = (successRate?: number) => {
+    // Only mark level as completed if success rate is 80% or higher
+    if (successRate && successRate >= 80) {
+      setCompletedLevels(prev => {
+        const newCompleted = [...new Set([...prev, currentLevel.id])];
+        console.log('Math boss battle completed successfully, new completed levels:', newCompleted);
+        return newCompleted;
+      });
+      
+      // Award coins and XP for completing the math boss battle
+      const coinsEarned = 150;
+      const xpEarned = 300;
+      
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map",
+        player: {
+          ...prev.player,
+          coins: prev.player.coins + coinsEarned,
+          xp: prev.player.xp + xpEarned
+        }
+      }));
+      
+      // Move to next level only if performance was good
+      const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
+      console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
+      setCurrentLevelId(nextLevelId);
+      
+      toast.success(`Matematik Boss Jangi tugadi! +${coinsEarned} tanga, +${xpEarned} XP!`);
+    } else {
+      // Failed to meet 80% requirement - stay on same level
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "map"
+      }));
+      
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% muvaffaqiyat darajasi kerak!");
+    }
   };
 
   const handleHome = () => {
@@ -318,7 +631,7 @@ const Index = () => {
       hasShield: false,
       doubleDamageActive: false
     });
-    toast.info("Returned to home page");
+    toast.info("Bosh sahifaga qaytildi");
   };
 
   const loadNextQuestion = () => {
@@ -355,11 +668,47 @@ const Index = () => {
       return;
     }
     
+    // For biology sorting levels, start the biology sorting game
+    if (level.type === "biology-sorting") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "biology-sorting"
+      }));
+      return;
+    }
+    
+    // For mutant monster battle levels, start the mutant monster battle game
+    if (level.type === "mutant-monster-battle") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "mutant-monster-battle"
+      }));
+      return;
+    }
+    
     // For flash quiz levels, start the flash quiz game
     if (level.type === "flash-quiz") {
       setGameState(prev => ({
         ...prev,
         gamePhase: "flash-quiz"
+      }));
+      return;
+    }
+    
+    // For equation builder levels, start the equation builder game
+    if (level.type === "equation-builder") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "equation-builder"
+      }));
+      return;
+    }
+    
+    // For math boss battle levels, start the math boss battle game
+    if (level.type === "math-boss-battle") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "math-boss-battle"
       }));
       return;
     }
@@ -378,6 +727,24 @@ const Index = () => {
       setGameState(prev => ({
         ...prev,
         gamePhase: "true-false-code"
+      }));
+      return;
+    }
+    
+    // For code matching levels, start the code matching game
+    if (level.type === "code-matching") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "code-matching"
+      }));
+      return;
+    }
+    
+    // For algoritm qorovuli levels, start the algoritm qorovuli game
+    if (level.type === "algoritm-qorovuli") {
+      setGameState(prev => ({
+        ...prev,
+        gamePhase: "algoritm-qorovuli"
       }));
       return;
     }
@@ -463,13 +830,13 @@ const Index = () => {
       if (questionsAnswered + 1 >= requiredQuestions) {
         const passPercentage = ((questionsCorrect + (correct ? 1 : 0)) / requiredQuestions) * 100;
         
-        if (passPercentage >= 60) {
-          // Pass the test
+        if (passPercentage >= 80) {
+          // Pass the test with 80% or higher
           setTimeout(() => {
             handleVictory();
           }, 1500);
         } else {
-          // Fail the test
+          // Fail the test - less than 80%
           setTimeout(() => {
             handleDefeat();
           }, 1500);
@@ -495,7 +862,7 @@ const Index = () => {
           if (isCritical) damage += 10;
           if (isSpecialAttack) {
             damage *= 2;
-            toast.success("🔥 FUSION MOVE ACTIVATED!");
+            toast.success("🔥 FUSION HAREKATI FAOL!");
           }
           if (prev.doubleDamageActive) {
             damage *= 2;
@@ -510,7 +877,7 @@ const Index = () => {
         } else {
           // Boss attacks
           if (prev.hasShield) {
-            toast.info("🛡️ Shield blocked the attack!");
+            toast.info("🛡️ Qalqon hujumni to'sdi!");
             newState.hasShield = false;
           } else {
             const damage = prev.currentBoss.damage;
@@ -541,18 +908,18 @@ const Index = () => {
             prev.player.maxHealth,
             prev.player.currentHealth + 30
           );
-          toast.success("❤️ Healed 30 HP!");
+          toast.success("❤️ 30 HP tiklandi!");
           break;
         case "shield":
           newState.hasShield = true;
-          toast.success("🛡️ Shield activated!");
+          toast.success("🛡️ Qalqon faollashtirildi!");
           break;
         case "timeFreeze":
-          toast.success("⏰ Time frozen for 3 seconds!");
+          toast.success("⏰ Vaqt 3 soniya muzlatildi!");
           break;
         case "doubleDamage":
           newState.doubleDamageActive = true;
-          toast.success("⚡ Next attack deals double damage!");
+          toast.success("⚡ Keyingi hujum ikki barobar zarar beradi!");
           break;
       }
       
@@ -597,11 +964,13 @@ const Index = () => {
     
     // If failed boss level, reset to level 1
     if (currentLevel.type === "boss") {
-      toast.error("Boss defeated you! Starting from Level 1...");
+      toast.error("Boss sizni mag'lub etdi! 1-bosqichdan boshlanadi...");
       setCurrentLevelId(1);
       setCompletedLevels([]);
+    } else {
+      // If failed test level, stay on same level and don't advance
+      toast.error("Keyingi bosqichga o'tish uchun kamida 80% to'g'ri javoblar kerak!");
     }
-    // If failed test level, stay on same level
   };
 
   const handleContinue = () => {
@@ -632,7 +1001,7 @@ const Index = () => {
       doubleDamageActive: false
     }));
     
-    toast.info("Returned to map. Your battle progress has been reset.");
+    toast.info("Xaritaga qaytildi. Jang jarayoni qayta tiklandi.");
   };
 
   // Show HomePage if no subject is selected
@@ -662,8 +1031,24 @@ const Index = () => {
         <BiologyMemoryMatch onLeave={handleBiologyMemoryMatchComplete} />
       )}
       
+      {gameState.gamePhase === "biology-sorting" && (
+        <BiologySortingGame onLeave={handleBiologySortingComplete} />
+      )}
+      
+      {gameState.gamePhase === "mutant-monster-battle" && (
+        <MutantMonsterBattle onLeave={handleMutantMonsterBattleComplete} />
+      )}
+      
       {gameState.gamePhase === "flash-quiz" && (
         <FlashQuiz onLeave={handleFlashQuizComplete} />
+      )}
+      
+      {gameState.gamePhase === "equation-builder" && (
+        <EquationBuilder onLeave={handleEquationBuilderComplete} />
+      )}
+      
+      {gameState.gamePhase === "math-boss-battle" && (
+        <MathBossBattle onLeave={handleMathBossBattleComplete} />
       )}
       
       {gameState.gamePhase === "fix-the-bug" && (
@@ -673,6 +1058,15 @@ const Index = () => {
       {gameState.gamePhase === "true-false-code" && (
         <TrueFalseCodeGame onLeave={handleTrueFalseCodeComplete} />
       )}
+      
+      {gameState.gamePhase === "code-matching" && (
+        <CodeMatchingGame onLeave={handleCodeMatchingComplete} />
+      )}
+      
+      {gameState.gamePhase === "algoritm-qorovuli" && (
+        <AlgoritmQorovuli onLeave={handleAlgoritmQorovuliComplete} />
+      )}
+      
       
       {gameState.gamePhase === "battleship" && (
         <StrategicMathBattleship onLeave={handleBattleshipComplete} />

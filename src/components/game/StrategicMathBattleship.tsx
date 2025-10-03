@@ -50,7 +50,7 @@ interface GameStats {
 }
 
 interface StrategicMathBattleshipProps {
-  onLeave?: () => void;
+  onLeave?: (successRate?: number) => void;
 }
 
 export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProps) => {
@@ -403,10 +403,10 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
         {/* Leave button */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400"
+            className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -419,7 +419,20 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 mt-16"
           >
-            <div className="text-8xl mb-6">🎯</div>
+            <motion.div 
+              className="text-8xl mb-6"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                rotate: [0, 10, -10, 0]
+              }}
+              transition={{ 
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              🎯
+            </motion.div>
             <h1 className="text-6xl font-bold text-white mb-4">X-O O'yini</h1>
             <p className="text-xl text-gray-300">Matematik savollar bilan strategik jang!</p>
           </motion.div>
@@ -450,14 +463,16 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
             </Card>
           </div>
 
-          <Button 
-            onClick={startGame}
-            size="lg"
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-16 py-6 text-2xl"
-          >
-            <Target className="w-8 h-8 mr-3" />
-            Boshlash
-          </Button>
+          <div className="flex justify-center">
+            <Button 
+              onClick={startGame}
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-20 py-8 text-3xl md:px-24 md:py-10 md:text-4xl"
+            >
+              <Target className="w-8 h-8 mr-3" />
+              Boshlash
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -469,10 +484,10 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
         {/* Leave button in bottom-left corner */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
-            className="absolute top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400"
+            className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
           >
             <Home className="w-4 h-4 mr-1" />
             Chiqish
@@ -490,14 +505,16 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
 
 
           <div className="text-center">
-            <Button 
-              onClick={startActualGame}
-              size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-16 py-6 text-2xl"
-            >
-              <Zap className="w-8 h-8 mr-3" />
-              O'yinni Boshlash
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                onClick={startActualGame}
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-16 py-6 text-2xl"
+              >
+                <Zap className="w-8 h-8 mr-3" />
+                O'yinni Boshlash
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -591,7 +608,11 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
             
             {onLeave && (
               <Button 
-                onClick={onLeave}
+                onClick={() => {
+                  const totalAnswers = gameStats.correctAnswers + gameStats.wrongAnswers;
+                  const successRate = totalAnswers > 0 ? Math.round((gameStats.correctAnswers / totalAnswers) * 100) : 0;
+                  onLeave(successRate);
+                }}
                 size="lg"
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               >
@@ -609,11 +630,11 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4 relative">
       {/* Leave button in bottom-left corner during game */}
       {onLeave && (
-        <Button 
-          onClick={onLeave}
+        <Button
+          onClick={() => onLeave()}
           variant="outline"
           size="sm"
-            className="absolute top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-10"
+          className="fixed top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
         >
           <Home className="w-4 h-4 mr-1" />
           Chiqish
