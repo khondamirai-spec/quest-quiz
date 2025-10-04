@@ -29,7 +29,14 @@ import { toast } from "sonner";
 export default function Home() {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [gameState, setGameState] = useState<GameState>({
-    currentLevel: 1,
+    player: {
+      name: "Player",
+      maxHealth: 100,
+      currentHealth: 100,
+      coins: 0,
+      xp: 0,
+      level: 1,
+    },
     currentBoss: {
       id: 1,
       name: "Test Boss",
@@ -39,29 +46,20 @@ export default function Home() {
       difficulty: 1,
       icon: "🐲"
     },
+    bossHealth: 100,
     currentQuestion: null,
-    score: 0,
-    lives: 3,
+    combo: 0,
+    timeLeft: 15,
     gamePhase: "home",
-    selectedSubject: null,
-    isPremium: false,
     powerUps: {
-      hint: 3,
-      skip: 2,
-      extraTime: 1,
+      heal: 0,
+      shield: 0,
+      timeFreeze: 0,
+      doubleDamage: 0,
     },
-    achievements: [],
-    statistics: {
-      totalQuestions: 0,
-      correctAnswers: 0,
-      wrongAnswers: 0,
-      gamesPlayed: 0,
-      totalScore: 0,
-      averageScore: 0,
-      bestScore: 0,
-      winRate: 0,
-      overallLevel: 1,
-    },
+    hasShield: false,
+    doubleDamageActive: false,
+    isPremium: false,
   });
 
   // Load saved game state from localStorage

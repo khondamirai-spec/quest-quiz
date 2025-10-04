@@ -53,7 +53,7 @@ export interface GameState {
   currentQuestion: Question | null;
   combo: number;
   timeLeft: number;
-  gamePhase: "map" | "battle" | "victory" | "defeat" | "avatar-selection" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "biology-sorting" | "mutant-monster-battle" | "flash-quiz" | "fix-the-bug" | "true-false-code" | "code-matching" | "equation-builder" | "math-boss-battle" | "algoritm-qorovuli";
+  gamePhase: "home" | "map" | "battle" | "victory" | "defeat" | "avatar-selection" | "battleship" | "racing" | "biology-case-study" | "biology-memory-match" | "biology-sorting" | "mutant-monster-battle" | "flash-quiz" | "fix-the-bug" | "true-false-code" | "code-matching" | "equation-builder" | "math-boss-battle" | "algoritm-qorovuli" | "leaderboard" | "profile" | "guide";
   powerUps: {
     heal: number;
     shield: number;
