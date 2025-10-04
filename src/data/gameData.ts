@@ -41,24 +41,55 @@ export const BIOLOGY_LEVELS: Level[] = [
     difficulty: 2,
     icon: "👹",
     questionsRequired: 8
+  },
+  // Premium Biology Levels (5-8)
+  {
+    id: 5,
+    name: "Premium Xotira Jang",
+    type: "biology-memory-match",
+    theme: "Biology",
+    difficulty: 2,
+    icon: "🧠",
+    questionsRequired: 5,
+    isPremium: true
+  },
+  {
+    id: 6,
+    name: "Premium Tadqiqot",
+    type: "biology-case-study",
+    theme: "Biology",
+    difficulty: 2,
+    icon: "🔬",
+    questionsRequired: 7,
+    isPremium: true
+  },
+  {
+    id: 7,
+    name: "Premium Saralash",
+    type: "biology-sorting",
+    theme: "Biology",
+    difficulty: 2,
+    icon: "🧪",
+    questionsRequired: 15,
+    isPremium: true
+  },
+  {
+    id: 8,
+    name: "Epic Mutant Boss",
+    type: "mutant-monster-battle",
+    theme: "Biology",
+    difficulty: 3,
+    icon: "🔥",
+    questionsRequired: 12,
+    isPremium: true
   }
 ];
 
 // Mathematics Course Levels
 export const MATH_LEVELS: Level[] = [
-  // Strategic Math Battleship - First level for Math course
+  // Flash Quiz - First level for Math course
   {
     id: 1,
-    name: "X-O O'yin",
-    type: "battleship",
-    theme: "Mathematics",
-    difficulty: 1,
-    icon: "🎯",
-    questionsRequired: 10
-  },
-  // Flash Quiz - Second level for Math course
-  {
-    id: 2,
     name: "Flash Quiz",
     type: "flash-quiz",
     theme: "Mathematics",
@@ -66,15 +97,25 @@ export const MATH_LEVELS: Level[] = [
     icon: "⚡",
     questionsRequired: 8
   },
-  // Equation Builder - Third level for Math course
+  // Equation Builder - Second level for Math course
   {
-    id: 3,
+    id: 2,
     name: "Tenglama Yig'uvchi",
     type: "equation-builder",
     theme: "Mathematics",
     difficulty: 1,
     icon: "🧮",
     questionsRequired: 5
+  },
+  // Strategic Math Battleship - Third level for Math course
+  {
+    id: 3,
+    name: "X-O O'yin",
+    type: "battleship",
+    theme: "Mathematics",
+    difficulty: 1,
+    icon: "🎯",
+    questionsRequired: 10
   },
   // Math Boss Battle - Final level for Math course
   {
@@ -85,6 +126,47 @@ export const MATH_LEVELS: Level[] = [
     difficulty: 2,
     icon: "⚔️",
     questionsRequired: 7
+  },
+  // Premium Math Levels (5-8)
+  {
+    id: 5,
+    name: "Premium X-O Jang",
+    type: "battleship",
+    theme: "Mathematics",
+    difficulty: 2,
+    icon: "🎯",
+    questionsRequired: 15,
+    isPremium: true
+  },
+  {
+    id: 6,
+    name: "Premium Flash Quiz",
+    type: "flash-quiz",
+    theme: "Mathematics",
+    difficulty: 2,
+    icon: "⚡",
+    questionsRequired: 12,
+    isPremium: true
+  },
+  {
+    id: 7,
+    name: "Premium Tenglama",
+    type: "equation-builder",
+    theme: "Mathematics",
+    difficulty: 2,
+    icon: "🧮",
+    questionsRequired: 8,
+    isPremium: true
+  },
+  {
+    id: 8,
+    name: "Epic Math Boss",
+    type: "math-boss-battle",
+    theme: "Mathematics",
+    difficulty: 3,
+    icon: "⚔️",
+    questionsRequired: 10,
+    isPremium: true
   }
 ];
 
@@ -129,6 +211,47 @@ export const CODING_LEVELS: Level[] = [
     difficulty: 3,
     icon: "🛡️",
     questionsRequired: 8
+  },
+  // Premium Coding Levels (5-8)
+  {
+    id: 5,
+    name: "Premium Xatolik",
+    type: "fix-the-bug",
+    theme: "Coding",
+    difficulty: 2,
+    icon: "🐛",
+    questionsRequired: 8,
+    isPremium: true
+  },
+  {
+    id: 6,
+    name: "Premium To'g'ri/Noto'g'ri",
+    type: "true-false-code",
+    theme: "Coding",
+    difficulty: 2,
+    icon: "✅❌",
+    questionsRequired: 8,
+    isPremium: true
+  },
+  {
+    id: 7,
+    name: "Premium Kod Moslashtirish",
+    type: "code-matching",
+    theme: "Coding",
+    difficulty: 2,
+    icon: "🔗",
+    questionsRequired: 10,
+    isPremium: true
+  },
+  {
+    id: 8,
+    name: "Epic Algoritm Boss",
+    type: "algoritm-qorovuli",
+    theme: "Coding",
+    difficulty: 4,
+    icon: "🛡️",
+    questionsRequired: 15,
+    isPremium: true
   }
 ];
 
@@ -178,26 +301,146 @@ export const QUESTIONS: Record<string, Question[]> = {
   Mathematics: [
     {
       id: "math1",
-      question: "What is 7 × 8?",
-      answers: ["54", "56", "58", "52"],
+      question: "12 × 8 = ?",
+      answers: ["94", "96", "98", "92"],
       correctAnswer: 1,
-      hint: "Think about 7 groups of 8",
+      hint: "12 guruh 8 ni hisoblang",
       category: "Mathematics"
     },
     {
       id: "math2",
-      question: "What is the square root of 144?",
+      question: "84 ÷ 7 = ?",
       answers: ["10", "11", "12", "13"],
       correctAnswer: 2,
-      hint: "What number multiplied by itself equals 144?",
+      hint: "84 ni 7 ga bo'ling",
       category: "Mathematics"
     },
     {
       id: "math3",
-      question: "If a triangle has angles of 60°, 60°, what is the third angle?",
-      answers: ["30°", "45°", "60°", "90°"],
+      question: "(15 + 9) × 2 = ?",
+      answers: ["46", "47", "48", "49"],
       correctAnswer: 2,
-      hint: "All angles in a triangle sum to 180°",
+      hint: "Avval qo'shing, keyin 2 ga ko'paytiring",
+      category: "Mathematics"
+    },
+    {
+      id: "math4",
+      question: "180 - 47 = ?",
+      answers: ["131", "132", "133", "134"],
+      correctAnswer: 2,
+      hint: "180 dan 47 ni ayiring",
+      category: "Mathematics"
+    },
+    {
+      id: "math5",
+      question: "45 ÷ 9 + 12 = ?",
+      answers: ["15", "16", "17", "18"],
+      correctAnswer: 2,
+      hint: "Avval bo'ling, keyin qo'shing",
+      category: "Mathematics"
+    },
+    {
+      id: "math6",
+      question: "To'g'ri to'rtburchak: uzunligi 12 sm, eni 7 sm. Yuzasi nechaga teng?",
+      answers: ["82", "83", "84", "85"],
+      correctAnswer: 2,
+      hint: "Uzunlik × en = yuzasi",
+      category: "Mathematics"
+    },
+    {
+      id: "math7",
+      question: "3³ + 2⁴ = ?",
+      answers: ["41", "42", "43", "44"],
+      correctAnswer: 2,
+      hint: "3³ = 27, 2⁴ = 16, ularni qo'shing",
+      category: "Mathematics"
+    },
+    {
+      id: "math8",
+      question: "120 ÷ (6 × 2) = ?",
+      answers: ["8", "9", "10", "11"],
+      correctAnswer: 2,
+      hint: "Avval qavs ichidagi ko'paytmani hisoblang",
+      category: "Mathematics"
+    },
+    {
+      id: "math9",
+      question: "240 ning 50% i nechaga teng?",
+      answers: ["110", "120", "130", "140"],
+      correctAnswer: 1,
+      hint: "240 ni 0.5 ga ko'paytiring",
+      category: "Mathematics"
+    },
+    {
+      id: "math10",
+      question: "Uchburchak ichki burchaklari yig'indisi nechaga teng?",
+      answers: ["170°", "175°", "180°", "185°"],
+      correctAnswer: 2,
+      hint: "Uchburchak burchaklari yig'indisi har doim 180°",
+      category: "Mathematics"
+    },
+    {
+      id: "math11",
+      question: "(100 - 36) ÷ 8 = ?",
+      answers: ["6", "7", "8", "9"],
+      correctAnswer: 2,
+      hint: "Avval ayiring, keyin bo'ling",
+      category: "Mathematics"
+    },
+    {
+      id: "math12",
+      question: "Poyezd 1 soatda 60 km yursa, 2,5 soatda necha km yuradi?",
+      answers: ["140", "145", "150", "155"],
+      correctAnswer: 2,
+      hint: "60 × 2.5 = ?",
+      category: "Mathematics"
+    },
+    {
+      id: "math13",
+      question: "7 × (15 - 6) = ?",
+      answers: ["61", "62", "63", "64"],
+      correctAnswer: 2,
+      hint: "Avval qavs ichidagi ayirmani hisoblang",
+      category: "Mathematics"
+    },
+    {
+      id: "math14",
+      question: "Tomoni 9 sm bo'lgan kvadratning perimetri nechaga teng?",
+      answers: ["34", "35", "36", "37"],
+      correctAnswer: 2,
+      hint: "Kvadrat perimetri = 4 × tomon",
+      category: "Mathematics"
+    },
+    {
+      id: "math15",
+      question: "Tenglamani yeching: 2x + 7 = 15. x = ?",
+      answers: ["3", "4", "5", "6"],
+      correctAnswer: 1,
+      hint: "7 ni o'ng tomonga o'tkazing, keyin 2 ga bo'ling",
+      category: "Mathematics"
+    },
+    {
+      id: "math16",
+      question: "144 ÷ 12 = ?",
+      answers: ["10", "11", "12", "13"],
+      correctAnswer: 2,
+      hint: "144 ni 12 ga bo'ling",
+      category: "Mathematics"
+    },
+    {
+      id: "math17",
+      question: "Xaltada 20 ta shar bor. 8 tasi qizil. Nechta ko'k shar bor?",
+      answers: ["10", "11", "12", "13"],
+      correctAnswer: 2,
+      hint: "20 - 8 = ?",
+      category: "Mathematics"
+    },
+    {
+      id: "math18",
+      question: "25² = ?",
+      answers: ["600", "615", "625", "650"],
+      correctAnswer: 2,
+      hint: "25 × 25 = ?",
       category: "Mathematics"
     }
   ],

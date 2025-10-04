@@ -37,45 +37,93 @@ interface GameStats {
 const MATH_PROBLEMS: MathProblem[] = [
   {
     id: 1,
-    question: "7 × 6 = ?",
-    answer: 42,
-    explanation: "7 × 6 = 42"
+    question: "Uchta ketma-ket son yig'indisi 72 ga teng. O'sha sonlarni toping. (23, 24, 25)",
+    answer: 23,
+    explanation: "23 + 24 + 25 = 72"
   },
   {
     id: 2,
-    question: "15 − 8 = ?",
-    answer: 7,
-    explanation: "15 − 8 = 7"
+    question: "Bir do'kon 120 000 so'mlik tovarni 15% chegirma bilan sotmoqda. Mijoz necha so'm to'lashi kerak?",
+    answer: 102000,
+    explanation: "120 000 × 0.15 = 18 000, 120 000 - 18 000 = 102 000 so'm"
   },
   {
     id: 3,
-    question: "12 ÷ 3 = ?",
-    answer: 4,
-    explanation: "12 ÷ 3 = 4"
+    question: "Uchburchakning ikki tomoni 8 sm va 11 sm. Uchinchi tomoni eng uzun tomondan 4 sm kichik bo'lsa, uchinchi tomon necha sm?",
+    answer: 7,
+    explanation: "11 - 4 = 7 sm"
   },
   {
     id: 4,
-    question: "9 + 14 = ?",
-    answer: 23,
-    explanation: "9 + 14 = 23"
+    question: "Sonning 25% qismi 18 ga teng bo'lsa, butun sonni toping.",
+    answer: 72,
+    explanation: "18 ÷ 0.25 = 72"
   },
   {
     id: 5,
-    question: "18 − 5 = ?",
-    answer: 13,
-    explanation: "18 − 5 = 13"
+    question: "5 kg olma 60 000 so'm bo'lsa, 8 kg olma necha so'm bo'ladi?",
+    answer: 96000,
+    explanation: "60 000 ÷ 5 = 12 000, 12 000 × 8 = 96 000 so'm"
   },
   {
     id: 6,
-    question: "4 × 9 = ?",
-    answer: 36,
-    explanation: "4 × 9 = 36"
+    question: "Bir avtomobil 2 soatda 120 km yurdi. Shu tezlikda 5 soatda necha km yuradi?",
+    answer: 300,
+    explanation: "120 ÷ 2 = 60 km/soat, 60 × 5 = 300 km"
   },
   {
     id: 7,
-    question: "25 ÷ 5 = ?",
-    answer: 5,
-    explanation: "25 ÷ 5 = 5"
+    question: "Agar (x - 7 = 12) bo'lsa, (x) ni toping.",
+    answer: 19,
+    explanation: "x - 7 = 12, x = 12 + 7 = 19"
+  },
+  {
+    id: 8,
+    question: "Ikki son yig'indisi 56 ga, farqi 12 ga teng. Shu sonlarni toping. (34 va 22)",
+    answer: 34,
+    explanation: "34 + 22 = 56, 34 - 22 = 12"
+  },
+  {
+    id: 9,
+    question: "Kvadratning perimetri 64 sm. Uning maydoni nechaga teng?",
+    answer: 256,
+    explanation: "Perimetri 64, tomoni 64 ÷ 4 = 16 sm, maydoni 16² = 256 sm²"
+  },
+  {
+    id: 10,
+    question: "Uchta ishchi 6 soatda devor quradi. Xuddi shunday devorni 2 ishchi necha soatda quradi?",
+    answer: 9,
+    explanation: "3 ishchi × 6 soat = 18 ish-soat, 18 ÷ 2 = 9 soat"
+  },
+  {
+    id: 11,
+    question: "Bir o'quvchi 40 ta savoldan 75% to'g'ri javob berdi. U nechta savolga to'g'ri javob bergan?",
+    answer: 30,
+    explanation: "40 × 0.75 = 30 savol"
+  },
+  {
+    id: 12,
+    question: "480 ning 1/5 qismini toping.",
+    answer: 96,
+    explanation: "480 ÷ 5 = 96"
+  },
+  {
+    id: 13,
+    question: "Uchta son o'rta arifmetigi 45 bo'lsa, ularning yig'indisi necha bo'ladi?",
+    answer: 135,
+    explanation: "45 × 3 = 135"
+  },
+  {
+    id: 14,
+    question: "15 litr benzindan 5 litr sarflandi. Qanchasi qoldi?",
+    answer: 10,
+    explanation: "15 - 5 = 10 litr"
+  },
+  {
+    id: 15,
+    question: "Agar (8x = 72) bo'lsa, (x) ni toping.",
+    answer: 9,
+    explanation: "8x = 72, x = 72 ÷ 8 = 9"
   }
 ];
 
@@ -89,7 +137,7 @@ export const MathBossBattle = ({ onLeave }: MathBossBattleProps) => {
     playerHP: 30,
     bossHP: 50,
     currentProblem: 1,
-    totalProblems: 7,
+    totalProblems: 15,
     correctAnswers: 0,
     wrongAnswers: 0
   });
@@ -108,7 +156,7 @@ export const MathBossBattle = ({ onLeave }: MathBossBattleProps) => {
       playerHP: 30,
       bossHP: 50,
       currentProblem: 1,
-      totalProblems: 7,
+      totalProblems: 15,
       correctAnswers: 0,
       wrongAnswers: 0
     });
@@ -187,7 +235,7 @@ export const MathBossBattle = ({ onLeave }: MathBossBattleProps) => {
       playerHP: 30,
       bossHP: 50,
       currentProblem: 1,
-      totalProblems: 7,
+      totalProblems: 15,
       correctAnswers: 0,
       wrongAnswers: 0
     });
@@ -238,7 +286,7 @@ export const MathBossBattle = ({ onLeave }: MathBossBattleProps) => {
             <Card className="bg-slate-800/50 border-slate-700">
               <CardContent className="p-6 text-center">
                 <Sword className="w-12 h-12 text-red-400 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">7 Masala</h3>
+                <h3 className="text-xl font-bold text-white mb-2">15 Masala</h3>
                 <p className="text-gray-300">Matematik jang</p>
               </CardContent>
             </Card>

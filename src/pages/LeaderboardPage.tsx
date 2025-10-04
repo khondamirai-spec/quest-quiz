@@ -1,12 +1,25 @@
-import { Trophy, Medal, Award, Crown, Star, Flame, Coins, Sword } from "lucide-react";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Trophy, Medal, Award, Crown, Star, Flame, Coins, Sword, Home, User, X, BookOpen } from "lucide-react";
 import { LeaderboardEntry } from "@/types/game";
 
-interface LeaderboardProps {
-  entries: LeaderboardEntry[];
-  className?: string;
-  onClose?: () => void;
+interface LeaderboardPageProps {
+  onBack: () => void;
+  onShowProfile?: () => void;
 }
+
+// Mock leaderboard data
+const leaderboardData: LeaderboardEntry[] = [
+  { id: "1", playerName: "DragonSlayer", totalCoins: 250, fastestDefeat: 45, mathLevel: 4, biologyLevel: 5, codingLevel: 3, overallLevel: 12, winRate: 87 },
+  { id: "2", playerName: "MathWizard", totalCoins: 200, fastestDefeat: 52, mathLevel: 6, biologyLevel: 2, codingLevel: 1, overallLevel: 9, winRate: 82 },
+  { id: "3", playerName: "QuizMaster", totalCoins: 150, fastestDefeat: 60, mathLevel: 3, biologyLevel: 4, codingLevel: 2, overallLevel: 9, winRate: 78 },
+  { id: "4", playerName: "Hero", totalCoins: 100, fastestDefeat: 75, mathLevel: 2, biologyLevel: 3, codingLevel: 1, overallLevel: 6, winRate: 75 },
+  { id: "5", playerName: "Challenger", totalCoins: 75, fastestDefeat: 90, mathLevel: 1, biologyLevel: 2, codingLevel: 1, overallLevel: 4, winRate: 70 },
+  { id: "6", playerName: "Warrior", totalCoins: 50, fastestDefeat: 85, mathLevel: 1, biologyLevel: 1, codingLevel: 1, overallLevel: 3, winRate: 65 },
+  { id: "7", playerName: "Mage", totalCoins: 50, fastestDefeat: 95, mathLevel: 1, biologyLevel: 1, codingLevel: 1, overallLevel: 3, winRate: 60 },
+  { id: "8", playerName: "Knight", totalCoins: 50, fastestDefeat: 100, mathLevel: 1, biologyLevel: 1, codingLevel: 1, overallLevel: 3, winRate: 55 },
+];
 
 const getRankIcon = (index: number) => {
   switch (index) {
@@ -47,9 +60,9 @@ const getRankGradient = (index: number) => {
   }
 };
 
-export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) => {
+export const LeaderboardPage = ({ onBack, onShowProfile }: LeaderboardPageProps) => {
   return (
-    <div className={`relative min-h-screen overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-800 ${className}`}>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-800">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -91,21 +104,36 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
         ))}
       </div>
 
-      {/* Header */}
-      <div className="relative z-10 p-6 md:p-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Close Button */}
-          {onClose && (
+      {/* Navigation Buttons */}
+      <div className="relative z-10 p-6">
+        <div className="flex justify-between items-start">
+          {/* Back Button */}
+          <motion.button
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={onBack}
+            className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center backdrop-blur-sm border border-white/20"
+          >
+            <Home className="w-8 h-8 text-white" />
+          </motion.button>
+
+          {/* Profile Button */}
+          {onShowProfile && (
             <motion.button
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              onClick={onClose}
-              className="mb-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center backdrop-blur-sm border border-white/20"
+              onClick={onShowProfile}
+              className="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center backdrop-blur-sm border border-white/20"
             >
-              <span className="text-white text-xl">×</span>
+              <User className="w-8 h-8 text-white" />
             </motion.button>
           )}
+        </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="relative z-10 px-6 pb-8">
+        <div className="max-w-4xl mx-auto">
           {/* Title */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -125,9 +153,9 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
                 ease: "easeInOut",
               }}
             >
-              <Trophy className="w-16 h-16 md:w-20 md:h-20 text-yellow-400 mx-auto drop-shadow-2xl" />
+              <Trophy className="w-20 h-20 md:w-24 md:h-24 text-yellow-400 mx-auto drop-shadow-2xl" />
             </motion.div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4"
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
                 style={{
                   background: "linear-gradient(to right, #fbbf24, #f59e0b, #d97706)",
                   WebkitBackgroundClip: "text",
@@ -136,7 +164,7 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
                 }}>
               REYTING
             </h1>
-            <p className="text-lg md:text-xl text-white/80">Eng yaxshi o'yinchilar</p>
+            <p className="text-xl md:text-2xl text-white/80">Eng yaxshi o'yinchilar</p>
           </motion.div>
 
           {/* Leaderboard Content */}
@@ -146,7 +174,7 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
             transition={{ delay: 0.3, duration: 0.8 }}
             className="space-y-4"
           >
-            {entries.length === 0 ? (
+            {leaderboardData.length === 0 ? (
               <div className="text-center py-16">
                 <motion.div
                   animate={{
@@ -159,13 +187,13 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
                     ease: "easeInOut",
                   }}
                 >
-                  <Trophy className="w-20 h-20 text-white/30 mx-auto mb-6" />
+                  <Trophy className="w-24 h-24 text-white/30 mx-auto mb-6" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-white/60 mb-2">Hali ballar yo'q</h3>
+                <h3 className="text-3xl font-bold text-white/60 mb-2">Hali ballar yo'q</h3>
                 <p className="text-white/50">Birinchi bo'lib raqobatlashing!</p>
               </div>
             ) : (
-              entries.slice(0, 10).map((entry, index) => (
+              leaderboardData.map((entry, index) => (
                 <motion.div
                   key={entry.id}
                   initial={{ opacity: 0, x: -50 }}
@@ -197,17 +225,23 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
                         <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
                           {entry.playerName}
                         </h3>
-                        <div className="flex items-center gap-4 text-sm text-white/70">
-                          <span className="flex items-center gap-1">
-                            <Sword className="w-4 h-4" />
-                            Boss {entry.highestBoss}
-                          </span>
-                          {entry.winStreak > 0 && (
+                        <div className="flex flex-col gap-2 text-sm text-white/70">
+                          <div className="flex items-center gap-4">
                             <span className="flex items-center gap-1">
-                              <Flame className="w-4 h-4 text-orange-400" />
-                              {entry.winStreak} ketma-ket
+                              <BookOpen className="w-4 h-4" />
+                              Math {entry.mathLevel}, Bio {entry.biologyLevel}, Code {entry.codingLevel}
                             </span>
-                          )}
+                            <span className="flex items-center gap-1">
+                              <Star className="w-4 h-4 text-blue-400" />
+                              Overall {entry.overallLevel}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="flex items-center gap-1">
+                              <Trophy className="w-4 h-4 text-green-400" />
+                              {entry.winRate}% g'alaba
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { HomePage } from "./HomePage";
+import { LeaderboardPage } from "./LeaderboardPage";
+import { GuidePage } from "./GuidePage";
+import { ProfilePage } from "./ProfilePage";
 import { BattleScreen } from "@/components/game/BattleScreen";
 import { MapScreen } from "@/components/game/MapScreen";
 import { VictoryScreen } from "@/components/game/VictoryScreen";
@@ -23,6 +26,9 @@ import { toast } from "sonner";
 
 const Index = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   
   const [gameState, setGameState] = useState<GameState>({
     player: {
@@ -46,11 +52,17 @@ const Index = () => {
       doubleDamage: 1
     },
     hasShield: false,
-    doubleDamageActive: false
+    doubleDamageActive: false,
+    isPremium: false
   });
 
   const [currentLevelId, setCurrentLevelId] = useState(1);
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
+  
+  // Gift state management
+  const [giftAvailable, setGiftAvailable] = useState(false);
+  const [giftOpened, setGiftOpened] = useState(false);
+  const [showGiftModal, setShowGiftModal] = useState(false);
   
   // Get the correct levels based on selected subject
   const getCurrentLevels = () => {
@@ -103,7 +115,8 @@ const Index = () => {
         doubleDamage: 1
       },
       hasShield: false,
-      doubleDamageActive: false
+      doubleDamageActive: false,
+      isPremium: gameState.isPremium
     });
   };
 
@@ -115,6 +128,7 @@ const Index = () => {
   };
 
   const handleBattleshipComplete = (successRate?: number) => {
+    console.log('Battleship completion called with successRate:', successRate);
     // Only mark level as completed if success rate is 80% or higher
     if (successRate && successRate >= 80) {
       setCompletedLevels(prev => {
@@ -296,6 +310,10 @@ const Index = () => {
           xp: prev.player.xp + xpEarned
         }
       }));
+      
+      // Set gift available instead of showing victory screen
+      setGiftAvailable(true);
+      setGiftOpened(false);
       
       // Move to next level only if performance was good
       const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
@@ -545,6 +563,10 @@ const Index = () => {
         }
       }));
       
+      // Set gift available instead of showing victory screen
+      setGiftAvailable(true);
+      setGiftOpened(false);
+      
       // Move to next level only if performance was good
       const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
       console.log('Moving from level', currentLevel.id, 'to level', nextLevelId);
@@ -584,6 +606,10 @@ const Index = () => {
           xp: prev.player.xp + xpEarned
         }
       }));
+      
+      // Set gift available instead of showing victory screen
+      setGiftAvailable(true);
+      setGiftOpened(false);
       
       // Move to next level only if performance was good
       const nextLevelId = Math.min(currentLevels.length, currentLevel.id + 1);
@@ -629,7 +655,8 @@ const Index = () => {
         doubleDamage: 1
       },
       hasShield: false,
-      doubleDamageActive: false
+      doubleDamageActive: false,
+      isPremium: gameState.isPremium
     });
     toast.info("Bosh sahifaga qaytildi");
   };
@@ -956,6 +983,46 @@ const Index = () => {
     setCurrentLevelId(nextLevelId);
   };
 
+  const handleGiftCoins = (coins: number) => {
+    setGameState(prev => ({
+      ...prev,
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coins
+      }
+    }));
+  };
+
+  const handleGiftOpen = () => {
+    setShowGiftModal(true);
+  };
+
+  const handleGiftClaimed = (coins: number) => {
+    setGiftOpened(true);
+    setGiftAvailable(false);
+    setShowGiftModal(false);
+    setGameState(prev => ({
+      ...prev,
+      player: {
+        ...prev.player,
+        coins: prev.player.coins + coins
+      }
+    }));
+    toast.success(`+${coins} tanga olindi!`);
+  };
+
+  const handleGiftClose = () => {
+    setShowGiftModal(false);
+  };
+
+  const handlePremiumPurchase = () => {
+    setGameState(prev => ({
+      ...prev,
+      isPremium: true
+    }));
+    toast.success("🎉 Premium Sarguzasht ochildi! Barcha imkoniyatlardan foydalanishingiz mumkin!");
+  };
+
   const handleDefeat = () => {
     setGameState(prev => ({
       ...prev,
@@ -1004,9 +1071,148 @@ const Index = () => {
     toast.info("Xaritaga qaytildi. Jang jarayoni qayta tiklandi.");
   };
 
+  // Exit handlers that don't progress levels
+  const handleBattleshipExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("X-O o'yinidan chiqildi.");
+  };
+
+  const handleBiologyCaseStudyExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Biologiya tadqiqotidan chiqildi.");
+  };
+
+  const handleBiologyMemoryMatchExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Xotira o'yinidan chiqildi.");
+  };
+
+  const handleBiologySortingExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Saralash o'yinidan chiqildi.");
+  };
+
+  const handleMutantMonsterExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Mutant Monster jangidan chiqildi.");
+  };
+
+  const handleFlashQuizExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Flash Quiz'dan chiqildi.");
+  };
+
+  const handleEquationBuilderExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Tenglama yig'uvchidan chiqildi.");
+  };
+
+  const handleMathBossExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Matematik Boss jangidan chiqildi.");
+  };
+
+  const handleFixTheBugExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Xatolikni tuzatish o'yinidan chiqildi.");
+  };
+
+  const handleTrueFalseCodeExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("To'g'ri yoki Noto'g'ri o'yinidan chiqildi.");
+  };
+
+  const handleCodeMatchingExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Kod moslashtirish o'yinidan chiqildi.");
+  };
+
+  const handleAlgoritmQorovuliExit = () => {
+    setGameState(prev => ({
+      ...prev,
+      gamePhase: "map"
+    }));
+    toast.info("Algoritm Qorovuli jangidan chiqildi.");
+  };
+
+  // Show ProfilePage if profile is requested
+  if (showProfile) {
+    return (
+      <ProfilePage 
+        onBack={() => setShowProfile(false)}
+        onShowSettings={() => {
+          // You can add settings functionality here later
+          console.log("Show settings");
+        }}
+      />
+    );
+  }
+
+  // Show GuidePage if guide is requested
+  if (showGuide) {
+    return (
+      <GuidePage 
+        onBack={() => setShowGuide(false)}
+        onShowProfile={() => setShowProfile(true)}
+      />
+    );
+  }
+
+  // Show LeaderboardPage if leaderboard is requested
+  if (showLeaderboard) {
+    return (
+      <LeaderboardPage 
+        onBack={() => setShowLeaderboard(false)}
+        onShowProfile={() => setShowProfile(true)}
+      />
+    );
+  }
+
   // Show HomePage if no subject is selected
   if (!selectedSubject) {
-    return <HomePage onSelectSubject={handleSelectSubject} />;
+    return (
+      <HomePage 
+        onSelectSubject={handleSelectSubject} 
+        onShowLeaderboard={() => setShowLeaderboard(true)}
+        onShowProfile={() => setShowProfile(true)}
+        onShowGuide={() => setShowGuide(true)}
+        isPremium={gameState.isPremium}
+        onPremiumPurchase={handlePremiumPurchase}
+      />
+    );
   }
 
   return (
@@ -1020,56 +1226,64 @@ const Index = () => {
           player={gameState.player}
           onHome={handleHome}
           subject={selectedSubject}
+          onShowProfile={() => setShowProfile(true)}
+          onShowGuide={() => setShowGuide(true)}
+          giftAvailable={giftAvailable}
+          giftOpened={giftOpened}
+          onGiftOpen={handleGiftOpen}
+          onGiftClaimed={handleGiftClaimed}
+          isPremium={gameState.isPremium}
+          onPremiumPurchase={handlePremiumPurchase}
         />
       )}
       
       {gameState.gamePhase === "biology-case-study" && (
-        <BiologyCaseStudy onLeave={handleBiologyCaseStudyComplete} />
+        <BiologyCaseStudy onLeave={handleBiologyCaseStudyComplete} onExit={handleBiologyCaseStudyExit} />
       )}
       
       {gameState.gamePhase === "biology-memory-match" && (
-        <BiologyMemoryMatch onLeave={handleBiologyMemoryMatchComplete} />
+        <BiologyMemoryMatch onLeave={handleBiologyMemoryMatchComplete} onExit={handleBiologyMemoryMatchExit} />
       )}
       
       {gameState.gamePhase === "biology-sorting" && (
-        <BiologySortingGame onLeave={handleBiologySortingComplete} />
+        <BiologySortingGame onLeave={handleBiologySortingComplete} onExit={handleBiologySortingExit} />
       )}
       
       {gameState.gamePhase === "mutant-monster-battle" && (
-        <MutantMonsterBattle onLeave={handleMutantMonsterBattleComplete} />
+        <MutantMonsterBattle onLeave={handleMutantMonsterBattleComplete} onExit={handleMutantMonsterExit} />
       )}
       
       {gameState.gamePhase === "flash-quiz" && (
-        <FlashQuiz onLeave={handleFlashQuizComplete} />
+        <FlashQuiz onLeave={handleFlashQuizComplete} onExit={handleFlashQuizExit} />
       )}
       
       {gameState.gamePhase === "equation-builder" && (
-        <EquationBuilder onLeave={handleEquationBuilderComplete} />
+        <EquationBuilder onLeave={handleEquationBuilderComplete} onExit={handleEquationBuilderExit} />
       )}
       
       {gameState.gamePhase === "math-boss-battle" && (
-        <MathBossBattle onLeave={handleMathBossBattleComplete} />
+        <MathBossBattle onLeave={handleMathBossBattleComplete} onExit={handleMathBossExit} />
       )}
       
       {gameState.gamePhase === "fix-the-bug" && (
-        <FixTheBug onLeave={handleFixTheBugComplete} />
+        <FixTheBug onLeave={handleFixTheBugComplete} onExit={handleFixTheBugExit} />
       )}
       
       {gameState.gamePhase === "true-false-code" && (
-        <TrueFalseCodeGame onLeave={handleTrueFalseCodeComplete} />
+        <TrueFalseCodeGame onLeave={handleTrueFalseCodeComplete} onExit={handleTrueFalseCodeExit} />
       )}
       
       {gameState.gamePhase === "code-matching" && (
-        <CodeMatchingGame onLeave={handleCodeMatchingComplete} />
+        <CodeMatchingGame onLeave={handleCodeMatchingComplete} onExit={handleCodeMatchingExit} />
       )}
       
       {gameState.gamePhase === "algoritm-qorovuli" && (
-        <AlgoritmQorovuli onLeave={handleAlgoritmQorovuliComplete} />
+        <AlgoritmQorovuli onLeave={handleAlgoritmQorovuliComplete} onExit={handleAlgoritmQorovuliExit} />
       )}
       
       
       {gameState.gamePhase === "battleship" && (
-        <StrategicMathBattleship onLeave={handleBattleshipComplete} />
+        <StrategicMathBattleship onLeave={handleBattleshipComplete} onExit={handleBattleshipExit} />
       )}
       
       
@@ -1091,6 +1305,8 @@ const Index = () => {
           xpEarned={rewardsData.xp}
           badgeEarned={rewardsData.badge}
           onContinue={handleContinue}
+          onGiftCoins={handleGiftCoins}
+          isBoss={currentLevel.type === "boss"}
         />
       )}
       
@@ -1101,6 +1317,7 @@ const Index = () => {
           onBackToMap={handleContinue}
         />
       )}
+      
     </>
   );
 };

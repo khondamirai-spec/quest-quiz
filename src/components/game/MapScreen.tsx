@@ -1,12 +1,12 @@
 ﻿import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BackgroundGlow } from "@/components/ui/background-components";
+import { PaywallModal } from "@/components/ui/paywall-modal";
 import { Level, Player } from "@/types/game";
 import { cn } from "@/lib/utils";
-import { Lock, CheckCircle, Trophy, Flame, Zap, BookOpen, Star, Swords, User, Home } from "lucide-react";
+import { Lock, CheckCircle, Trophy, Flame, Zap, BookOpen, Star, Swords, User, Home, Crown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Leaderboard } from "./Leaderboard";
 import { ExpandableTabs } from "@/components/ui/expandable-tabs";
 
 // Helper functions for icon animations
@@ -196,6 +196,14 @@ interface MapScreenProps {
   player?: Player;
   onHome?: () => void;
   subject?: string;
+  onShowProfile?: () => void;
+  onShowGuide?: () => void;
+  giftAvailable?: boolean;
+  giftOpened?: boolean;
+  onGiftOpen?: () => void;
+  onGiftClaimed?: (coins: number) => void;
+  isPremium?: boolean;
+  onPremiumPurchase?: () => void;
 }
 
 export const MapScreen = ({ 
@@ -205,7 +213,15 @@ export const MapScreen = ({
   onSelectLevel,
   player,
   onHome,
-  subject
+  subject,
+  onShowProfile,
+  onShowGuide,
+  giftAvailable,
+  giftOpened,
+  onGiftOpen,
+  onGiftClaimed,
+  isPremium = false,
+  onPremiumPurchase
 }: MapScreenProps) => {
   const totalLevels = levels.length;
   const completedCount = completedLevels.length;
@@ -213,24 +229,28 @@ export const MapScreen = ({
   
   // Calculate streak (for demo purposes)
   const streak = completedLevels.length > 0 ? completedLevels.length : 0;
+  
+  // Coin animation state
+  const [showCoinAnimation, setShowCoinAnimation] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  
+  const handleGiftClick = () => {
+    setShowCoinAnimation(true);
+    
+    // Hide animation after 3 seconds and mark as claimed
+    setTimeout(() => {
+      setShowCoinAnimation(false);
+      // Mark gift as claimed and give 70 coins
+      onGiftClaimed?.(70);
+    }, 3000);
+  };
 
-  const [showGuide, setShowGuide] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
   
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   
-  // Mock leaderboard data
-  const leaderboardData = [
-    { id: "1", playerName: "DragonSlayer", totalCoins: 1500, highestBoss: 5, winStreak: 10, fastestDefeat: 45 },
-    { id: "2", playerName: "MathWizard", totalCoins: 1200, highestBoss: 4, winStreak: 8, fastestDefeat: 52 },
-    { id: "3", playerName: "QuizMaster", totalCoins: 950, highestBoss: 3, winStreak: 5, fastestDefeat: 60 },
-    { id: "4", playerName: player?.name || "Hero", totalCoins: player?.coins || 0, highestBoss: currentLevelId, winStreak: streak, fastestDefeat: 0 },
-    { id: "5", playerName: "Challenger", totalCoins: 500, highestBoss: 2, winStreak: 3, fastestDefeat: 75 },
-  ];
   
   // Format subject name
   const subjectName = subject ? subject.charAt(0).toUpperCase() + subject.slice(1) : "Quest";
@@ -265,7 +285,6 @@ export const MapScreen = ({
               <ExpandableTabs
                 tabs={[
                   { title: "Bosh Sahifa", icon: Home },
-                  { title: "Reyting", icon: Trophy },
                   { title: "Qo'llanma", icon: BookOpen },
                   { title: "Profil", icon: User },
                 ]}
@@ -273,9 +292,8 @@ export const MapScreen = ({
                 activeColor="text-emerald-600 dark:text-emerald-400"
                 onChange={(index) => {
                   if (index === 0) onHome?.();
-                  else if (index === 1) setShowLeaderboard(true);
-                  else if (index === 2) setShowGuide(true);
-                  else if (index === 3) setShowProfile(true);
+                  else if (index === 1) onShowGuide?.();
+                  else if (index === 2) onShowProfile?.();
                 }}
               />
             </div>
@@ -287,11 +305,18 @@ export const MapScreen = ({
             <div className="relative space-y-6 pb-12">
               {levels.map((level, index) => {
                 const isCompleted = completedLevels.includes(level.id);
-                const isBoss = level.type === "boss" || level.type === "math-boss-battle" || level.type === "algoritm-qorovuli";
+                const isBoss = level.type === "boss" || level.type === "math-boss-battle" || level.type === "algoritm-qorovuli" || level.type === "mutant-monster-battle";
                 
-                // Special unlock logic for coding course boss (Algoritm Qorovuli)
+                // Special unlock logic for boss levels
                 let isUnlocked = false;
-                if (isBoss && level.type === "algoritm-qorovuli") {
+                let isPremiumLocked = false;
+                
+                if (level.isPremium) {
+                  // Premium levels are always visible but locked unless both conditions are met
+                  const firstBossDefeated = completedLevels.includes(4);
+                  isUnlocked = isPremium && firstBossDefeated;
+                  isPremiumLocked = !isPremium || !firstBossDefeated; // Show locked if no premium OR first boss not defeated
+                } else if (isBoss && (level.type === "algoritm-qorovuli" || level.type === "math-boss-battle" || level.type === "mutant-monster-battle")) {
                   // Boss is only unlocked if level 3 is completed with 80%+ success
                   isUnlocked = completedLevels.includes(3);
                 } else if (isBoss) {
@@ -302,7 +327,7 @@ export const MapScreen = ({
                   isUnlocked = level.id <= currentLevelId;
                 }
                 
-                const isLocked = !isUnlocked;
+                const isLocked = !isUnlocked && !isPremiumLocked;
                 const isCurrent = level.id === currentLevelId && !isCompleted;
                 
                 // Alternate left and right positioning for decorative elements
@@ -319,8 +344,20 @@ export const MapScreen = ({
                     {/* Level Node */}
                     <div className="flex flex-col items-center gap-2">
                       <button
-                        onClick={() => !isLocked && onSelectLevel(level)}
-                        disabled={isLocked}
+                        onClick={() => {
+                          if (isPremiumLocked) {
+                            if (level.isPremium && !completedLevels.includes(4)) {
+                              // Show message that first boss needs to be defeated
+                              // For now, just open paywall - you can add a different modal later
+                              setShowPaywall(true);
+                            } else {
+                              setShowPaywall(true);
+                            }
+                          } else if (!isLocked) {
+                            onSelectLevel(level);
+                          }
+                        }}
+                        disabled={isLocked && !isPremiumLocked}
                 className={cn(
                           "relative rounded-full flex items-center justify-center transition-all transform hover:scale-110 disabled:hover:scale-100 active:scale-95",
                           // Size based on type - Ensure minimum 44px touch target
@@ -333,6 +370,8 @@ export const MapScreen = ({
                           isCurrent && !isBoss && "bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-[6px] border-b-[8px] border-amber-600 animate-pulse shadow-[0_8px_0_0_rgba(217,119,6,0.3),0_0_20px_rgba(251,191,36,0.5)]",
                           // Current boss - Epic purple/red
                           isCurrent && isBoss && "bg-gradient-to-b from-purple-400 via-fuchsia-500 to-pink-600 border-[6px] border-b-[8px] border-fuchsia-700 animate-pulse shadow-[0_8px_0_0_rgba(162,28,175,0.3),0_0_30px_rgba(217,70,239,0.6)]",
+                          // Premium locked state - Golden gradient with reduced opacity
+                          isPremiumLocked && level.isPremium && "bg-gradient-to-b from-yellow-400 via-amber-500 to-orange-600 border-[6px] border-b-[8px] border-orange-700 opacity-50 hover:opacity-70 cursor-pointer",
                           // Locked state - Gray 3D
                           isLocked && "bg-gradient-to-b from-gray-300 via-gray-400 to-gray-500 border-[6px] border-b-[8px] border-gray-600 cursor-not-allowed opacity-70",
                           // Available state - Blue/Purple gradient
@@ -347,6 +386,13 @@ export const MapScreen = ({
                         {/* Icon content */}
                         {isLocked ? (
                           <Lock className="relative z-10 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-600 drop-shadow-md" />
+                        ) : isPremiumLocked && level.isPremium ? (
+                          <div className="relative z-10 flex flex-col items-center">
+                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white drop-shadow-lg mb-1" />
+                            <span className="text-xs sm:text-sm font-bold text-white drop-shadow-md">
+                              {completedLevels.includes(4) ? "PREMIUM" : "BOSS FIRST"}
+                            </span>
+                          </div>
                         ) : isCompleted ? (
                           <CheckCircle className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white drop-shadow-lg" fill="currentColor" />
                         ) : (
@@ -380,6 +426,13 @@ export const MapScreen = ({
                           </div>
                         )}
 
+                        {/* Premium indicator */}
+                        {level.isPremium && !isLocked && (
+                          <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center border-3 border-white shadow-lg animate-pulse">
+                            <Star className="w-5 h-5 text-white" />
+                          </div>
+                        )}
+
                         {/* Sparkle effect for current level */}
                         {isCurrent && (
                           <>
@@ -394,7 +447,7 @@ export const MapScreen = ({
                   <div className="text-center max-w-[100px] sm:max-w-none">
                         <p className={cn(
                           "text-xs sm:text-sm font-bold truncate px-1",
-                          isLocked ? "text-zinc-400" : "text-zinc-800 dark:text-white"
+                          isLocked ? "text-zinc-400" : isPremiumLocked ? "text-yellow-400" : "text-zinc-800 dark:text-white"
                         )}>
                           {level.name}
                         </p>
@@ -403,12 +456,27 @@ export const MapScreen = ({
                             Boss Level
                           </p>
                         )}
+                        {level.isPremium && (
+                          <p className="text-[10px] sm:text-xs text-yellow-500 dark:text-yellow-400 font-semibold">
+                            {isPremiumLocked ? 
+                              (completedLevels.includes(4) ? "Premium Locked" : "Defeat Boss First") : 
+                              "Premium Level"
+                            }
+                          </p>
+                        )}
                   </div>
 
                       {/* Unit badge for first level only */}
                       {index === 0 && (
                         <Badge variant="secondary" className="text-[10px] sm:text-xs px-2 py-0.5">
                           Unit 1
+                        </Badge>
+                      )}
+
+                      {/* Unit badge for first premium level */}
+                      {level.isPremium && index === 4 && (
+                        <Badge variant="secondary" className="text-[10px] sm:text-xs px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-yellow-500">
+                          Unit 2 - Premium
                         </Badge>
                       )}
 
@@ -465,361 +533,199 @@ export const MapScreen = ({
                 );
               })}
 
-              {/* Treasure chest at the end */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative flex justify-center pt-4"
-              >
-                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-4 sm:border-[6px] border-b-[6px] sm:border-b-[8px] border-amber-700 shadow-[0_6px_0_0_rgba(146,64,14,0.3),0_0_20px_rgba(251,191,36,0.4)] sm:shadow-[0_8px_0_0_rgba(146,64,14,0.3),0_0_30px_rgba(251,191,36,0.4)] flex items-center justify-center text-4xl sm:text-5xl animate-bounce">
-                  <div className="absolute inset-2 rounded-full bg-gradient-to-b from-white/40 to-transparent opacity-50 pointer-events-none" />
-                  <span className="relative drop-shadow-lg">🎁</span>
-                </div>
-              </motion.div>
+
+              {/* Gift Button - appears after boss completion */}
+              {giftAvailable && !giftOpened && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="relative flex justify-center pt-4"
+                >
+                  <button
+                    onClick={handleGiftClick}
+                    className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-b from-yellow-400 via-orange-500 to-red-600 border-4 sm:border-[6px] border-b-[6px] sm:border-b-[8px] border-orange-700 shadow-[0_8px_0_0_rgba(194,65,12,0.3),0_0_30px_rgba(251,191,36,0.6)] flex items-center justify-center text-4xl sm:text-5xl hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <div className="absolute inset-2 rounded-full bg-gradient-to-b from-white/40 to-transparent opacity-50 pointer-events-none" />
+                    <span className="relative drop-shadow-lg text-7xl">🪙</span>
+                  </button>
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-center">
+                    <p className="text-white text-xs sm:text-sm font-bold bg-black/50 px-2 py-1 rounded-full">
+                      +70 tanga olish!
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Coin Animation */}
+              <AnimatePresence>
+                {showCoinAnimation && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none bg-black/30"
+                  >
+                    <div className="relative">
+                      {/* Reward Card */}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut", type: "spring" }}
+                        className="bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 p-8 rounded-3xl shadow-2xl border-4 border-white/30"
+                      >
+                        <div className="text-center space-y-4">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.3, duration: 0.5 }}
+                            className="text-6xl"
+                          >
+                            💰
+                          </motion.div>
+                          <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.5, duration: 0.5 }}
+                            className="text-4xl font-black text-white"
+                          >
+                            +70
+                          </motion.div>
+                          <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.7, duration: 0.5 }}
+                            className="text-lg font-bold text-white/90"
+                          >
+                            TANGA OLINDI!
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                      
+                      {/* Sparkle Effects */}
+                      {[...Array(8)].map((_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ 
+                            x: 0, 
+                            y: 0, 
+                            scale: 0, 
+                            opacity: 0
+                          }}
+                          animate={{ 
+                            x: Math.cos(i * 45 * Math.PI / 180) * 100,
+                            y: Math.sin(i * 45 * Math.PI / 180) * 100,
+                            scale: [0, 1, 0],
+                            opacity: [0, 1, 0]
+                          }}
+                          transition={{ 
+                            duration: 1.5,
+                            delay: 0.5 + i * 0.1,
+                            ease: "easeOut"
+                          }}
+                          className="absolute text-2xl"
+                          style={{
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)'
+                          }}
+                        >
+                          ✨
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
+
+        {/* Premium Unlock Footer */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="sticky bottom-0 w-full z-20"
+        >
+          {isPremium ? (
+            /* Premium Unlocked State */
+            <div className="w-full py-4 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 shadow-lg">
+              <div className="max-w-7xl mx-auto px-4">
+                <div className="flex items-center justify-center gap-3">
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Crown className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <span className="text-white font-bold text-lg">
+                    Premium Sarguzasht ochilgan!
+                  </span>
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Crown className="w-6 h-6 text-white" />
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Premium Locked State */
+            <div className="w-full py-4 bg-gradient-to-r from-slate-800 via-purple-900 to-slate-800 border-t border-white/20 shadow-lg backdrop-blur-sm">
+              <div className="max-w-7xl mx-auto px-4">
+                <div className="flex items-center justify-center gap-4">
+                  <motion.div
+                    animate={{
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Lock className="w-6 h-6 text-yellow-400" />
+                  </motion.div>
+                  
+                  <span className="text-white font-medium text-center flex-1">
+                    Qo'shimcha darajalarni ochish uchun to'lang
+                  </span>
+                  
+                  <Button
+                    onClick={() => setShowPaywall(true)}
+                    className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    Darajalarni ochish
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </motion.div>
       </div>
 
-      {/* Guide Modal */}
-      <AnimatePresence>
-        {showGuide && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowGuide(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center"
-            >
-              {/* Modal - Stop propagation to prevent closing when clicking inside */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-[90%] sm:w-[550px] bg-white dark:bg-zinc-800 rounded-2xl shadow-2xl max-h-[85vh] flex flex-col overflow-hidden"
-              >
-              {/* Header */}
-              <div className="bg-gradient-to-r from-emerald-400 via-green-500 to-cyan-500 p-4 sm:p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-white">Qanday O'ynash</h2>
-                      <p className="text-xs sm:text-sm text-white/80">O'yin Qo'llanmasi</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setShowGuide(false)}
-                    className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
-                  >
-                    <span className="text-white text-xl">Г—</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Guide Content */}
-              <div className="p-4 sm:p-6 overflow-y-auto flex-1">
-                <div className="space-y-4">
-                  {/* Progress Through Levels */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                    className="flex gap-3 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-800"
-                  >
-                    <div className="text-3xl shrink-0">Ї</div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Darslarni Yakunlash
-                      </h3>
-                      <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        Savollarga javob berib test bosqichlaridan o'ting. Har bir bosqichni o'tib, keyingisini oching!
-                      </p>
-                    </div>
-                  </motion.div>
-
-                  {/* Battle Bosses */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="flex gap-3 p-3 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-xl border border-red-200 dark:border-red-800"
-                  >
-                    <div className="text-3xl shrink-0">рџђ‰</div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Bosslarni Mag'lub Etish
-                      </h3>
-                      <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        Savollarga to'g'ri javob berib bossni jarohatlang. Noto'g'ri javoblar sizni jarohatlaydi! Bossni mag'lub etib g'alaba qozoning.
-                      </p>
-                    </div>
-                  </motion.div>
-
-                  {/* Earn Rewards */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="flex gap-3 p-3 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800"
-                  >
-                    <div className="text-3xl shrink-0">рџ’°</div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Mukofotlar Topish
-                      </h3>
-                      <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                        To'g'ri javoblar uchun tangalar va XP oling. Bonus zarar uchun kombinatsiyalar yarating va yutuqlarni oching!
-                      </p>
-                    </div>
-                  </motion.div>
-
-                  {/* Stats Explanation */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="p-3 bg-zinc-50 dark:bg-zinc-700/50 rounded-xl border border-zinc-200 dark:border-zinc-600"
-                  >
-                    <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-3">
-                      Statistika Qo'llanmasi
-                    </h3>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center shrink-0">
-                          <Flame className="w-4 h-4 text-orange-500" />
-                        </div>
-                        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">Ketma-ketlik:</span> Ketma-ket yakunlangan bosqichlar
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center shrink-0">
-                          <Trophy className="w-4 h-4 text-yellow-600" />
-                        </div>
-                        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">Tangalar:</span> Jangdan olingan valyuta
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
-                          <Zap className="w-4 h-4 text-blue-500" />
-                        </div>
-                        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
-                          <span className="font-semibold text-zinc-800 dark:text-white">XP:</span> Darajani oshirish uchun tajriba ballari
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Pro Tips */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="flex gap-3 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-800"
-                  >
-                    <div className="text-3xl shrink-0">рџ’Ў</div>
-                    <div>
-                      <h3 className="font-bold text-sm sm:text-base text-zinc-800 dark:text-white mb-1">
-                        Professional Maslahatlar
-                      </h3>
-                      <ul className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 space-y-1 list-disc list-inside">
-                        <li>Kritik zarbalar uchun tez javob bering!</li>
-                        <li>Maxsus hujumlar uchun 3+ kombinatsiya yarating</li>
-                        <li>Boss janglarida kuchaytiruvchilarni strategik ishlating</li>
-                      </ul>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-              </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Leaderboard Modal */}
-      <AnimatePresence>
-        {showLeaderboard && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowLeaderboard(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center"
-            >
-              {/* Modal */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-[90%] sm:w-[500px] bg-white dark:bg-zinc-800 rounded-2xl shadow-2xl max-h-[85vh] flex flex-col overflow-hidden"
-              >
-                {/* Header */}
-                <div className="bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 p-4 sm:p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <Trophy className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Reyting</h2>
-                        <p className="text-xs sm:text-sm text-white/80">Eng Yaxshi O'yinchilar</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowLeaderboard(false)}
-                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
-                    >
-                      <span className="text-white text-xl">Г—</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Leaderboard Content */}
-                <div className="p-4 sm:p-6 overflow-y-auto flex-1">
-                  <Leaderboard entries={leaderboardData} />
-                </div>
-              </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Profile Modal */}
-      <AnimatePresence>
-        {showProfile && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowProfile(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center"
-            >
-              {/* Modal */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-[90%] sm:w-[500px] bg-white dark:bg-zinc-800 rounded-2xl shadow-2xl max-h-[85vh] flex flex-col overflow-hidden"
-              >
-                {/* Header */}
-                <div className="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 p-4 sm:p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <User className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-white">Profil</h2>
-                        <p className="text-xs sm:text-sm text-white/80">O'yinchi Statistikasi</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowProfile(false)}
-                      className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center"
-                    >
-                      <span className="text-white text-xl">Г—</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Profile Content */}
-                <div className="p-4 sm:p-6 overflow-y-auto flex-1">
-                  <div className="space-y-4">
-                    {/* Player Avatar */}
-                    <div className="flex flex-col items-center gap-3 pb-4 border-b border-zinc-200 dark:border-zinc-700">
-                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-4xl">
-                        рџ‘¤
-                      </div>
-                      <div className="text-center">
-                        <h3 className="text-xl font-bold text-zinc-800 dark:text-white">{player?.name || "Hero"}</h3>
-                        <p className="text-sm text-zinc-500">Daraja {player?.level || 1}</p>
-                      </div>
-                    </div>
-
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="p-4 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                        <div className="text-2xl mb-1">рџ’°</div>
-                        <p className="text-2xl font-bold text-yellow-700 dark:text-yellow-500">{player?.coins || 0}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Tangalar</p>
-                      </div>
-                      <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
-                        <div className="text-2xl mb-1">в­ђ</div>
-                        <p className="text-2xl font-bold text-blue-700 dark:text-blue-500">{player?.xp || 0}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Tajriba</p>
-                      </div>
-                      <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-800">
-                        <div className="text-2xl mb-1">Ї</div>
-                        <p className="text-2xl font-bold text-green-700 dark:text-green-500">{completedCount}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Yakunlangan</p>
-                      </div>
-                      <div className="p-4 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-800">
-                        <div className="text-2xl mb-1">рџ”Ґ</div>
-                        <p className="text-2xl font-bold text-orange-700 dark:text-orange-500">{streak}</p>
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400">Ketma-ketlik</p>
-                      </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="p-4 bg-zinc-50 dark:bg-zinc-700/50 rounded-xl border border-zinc-200 dark:border-zinc-600">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Jarayon</span>
-                        <span className="text-sm font-bold text-zinc-800 dark:text-white">{Math.round(progressPercentage)}%</span>
-                      </div>
-                      <div className="w-full h-3 bg-zinc-200 dark:bg-zinc-600 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${progressPercentage}%` }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                        />
-                      </div>
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
-                        {completedCount} ta {totalLevels} bosqichdan yakunlangan
-                      </p>
-                    </div>
-
-                    {/* Health Stats */}
-                    <div className="p-4 bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border border-red-200 dark:border-red-800">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xl">вќ¤пёЏ</span>
-                        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Salomatlik</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 h-2 bg-red-200 dark:bg-red-900/50 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-red-500 to-pink-500"
-                            style={{ width: `${(player?.currentHealth || 100) / (player?.maxHealth || 100) * 100}%` }}
-                          />
-                        </div>
-                        <span className="text-sm font-bold text-red-700 dark:text-red-400">
-                          {player?.currentHealth || 100}/{player?.maxHealth || 100}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Paywall Modal */}
+      <PaywallModal
+        isOpen={showPaywall}
+        onClose={() => setShowPaywall(false)}
+        onPurchase={() => {
+          onPremiumPurchase?.();
+          setShowPaywall(false);
+        }}
+      />
     </div>
   );
 };
-
-

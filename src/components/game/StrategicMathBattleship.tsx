@@ -51,9 +51,10 @@ interface GameStats {
 
 interface StrategicMathBattleshipProps {
   onLeave?: (successRate?: number) => void;
+  onExit?: () => void;
 }
 
-export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProps) => {
+export const StrategicMathBattleship = ({ onLeave, onExit }: StrategicMathBattleshipProps) => {
   const [gamePhase, setGamePhase] = useState<'menu' | 'instructions' | 'playing' | 'completed'>('menu');
   const [currentProblem, setCurrentProblem] = useState<MathProblem | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -75,43 +76,165 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
   const mathProblems: MathProblem[] = [
     {
       id: 'math1',
-      question: '7 + 8 = ?',
-      answer: 15,
+      question: '12 × 8 = ?',
+      answer: 96,
       type: 'algebra',
       difficulty: 1,
-      timeLimit: 10
+      timeLimit: 10,
+      hint: '12 guruh 8 ni hisoblang'
     },
     {
       id: 'math2',
-      question: '12 × 3 = ?',
-      answer: 36,
+      question: '84 ÷ 7 = ?',
+      answer: 12,
       type: 'algebra',
       difficulty: 1,
-      timeLimit: 10
+      timeLimit: 10,
+      hint: '84 ni 7 ga bo\'ling'
     },
     {
       id: 'math3',
-      question: '45 ÷ 9 = ?',
-      answer: 5,
+      question: '(15 + 9) × 2 = ?',
+      answer: 48,
       type: 'algebra',
       difficulty: 1,
-      timeLimit: 10
+      timeLimit: 10,
+      hint: 'Avval qo\'shing, keyin 2 ga ko\'paytiring'
     },
     {
       id: 'math4',
-      question: '25 - 17 = ?',
-      answer: 8,
+      question: '180 - 47 = ?',
+      answer: 133,
       type: 'algebra',
       difficulty: 1,
-      timeLimit: 10
+      timeLimit: 10,
+      hint: '180 dan 47 ni ayiring'
     },
     {
       id: 'math5',
-      question: '6² = ?',
+      question: '45 ÷ 9 + 12 = ?',
+      answer: 17,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Avval bo\'ling, keyin qo\'shing'
+    },
+    {
+      id: 'math6',
+      question: 'To\'g\'ri to\'rtburchak: uzunligi 12 sm, eni 7 sm. Yuzasi nechaga teng?',
+      answer: 84,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Uzunlik × en = yuzasi'
+    },
+    {
+      id: 'math7',
+      question: '3³ + 2⁴ = ?',
+      answer: 43,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '3³ = 27, 2⁴ = 16, ularni qo\'shing'
+    },
+    {
+      id: 'math8',
+      question: '120 ÷ (6 × 2) = ?',
+      answer: 10,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Avval qavs ichidagi ko\'paytmani hisoblang'
+    },
+    {
+      id: 'math9',
+      question: '240 ning 50% i nechaga teng?',
+      answer: 120,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '240 ni 0.5 ga ko\'paytiring'
+    },
+    {
+      id: 'math10',
+      question: 'Uchburchak ichki burchaklari yig\'indisi nechaga teng?',
+      answer: 180,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Uchburchak burchaklari yig\'indisi har doim 180°'
+    },
+    {
+      id: 'math11',
+      question: '(100 - 36) ÷ 8 = ?',
+      answer: 8,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Avval ayiring, keyin bo\'ling'
+    },
+    {
+      id: 'math12',
+      question: 'Poyezd 1 soatda 60 km yursa, 2,5 soatda necha km yuradi?',
+      answer: 150,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '60 × 2.5 = ?'
+    },
+    {
+      id: 'math13',
+      question: '7 × (15 - 6) = ?',
+      answer: 63,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: 'Avval qavs ichidagi ayirmani hisoblang'
+    },
+    {
+      id: 'math14',
+      question: 'Tomoni 9 sm bo\'lgan kvadratning perimetri nechaga teng?',
       answer: 36,
       type: 'algebra',
       difficulty: 1,
-      timeLimit: 10
+      timeLimit: 10,
+      hint: 'Kvadrat perimetri = 4 × tomon'
+    },
+    {
+      id: 'math15',
+      question: 'Tenglamani yeching: 2x + 7 = 15. x = ?',
+      answer: 4,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '7 ni o\'ng tomonga o\'tkazing, keyin 2 ga bo\'ling'
+    },
+    {
+      id: 'math16',
+      question: '144 ÷ 12 = ?',
+      answer: 12,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '144 ni 12 ga bo\'ling'
+    },
+    {
+      id: 'math17',
+      question: 'Xaltada 20 ta shar bor. 8 tasi qizil. Nechta ko\'k shar bor?',
+      answer: 12,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '20 - 8 = ?'
+    },
+    {
+      id: 'math18',
+      question: '25² = ?',
+      answer: 625,
+      type: 'algebra',
+      difficulty: 1,
+      timeLimit: 10,
+      hint: '25 × 25 = ?'
     }
   ];
 
@@ -400,17 +523,24 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
   if (gamePhase === 'menu') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-8 relative">
-        {/* Leave button */}
-        {onLeave && (
-          <Button 
-            onClick={() => onLeave()}
-            variant="outline"
-            size="sm"
-            className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
+        {/* Exit button */}
+        {onExit && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-4 left-4 z-50"
           >
-            <Home className="w-4 h-4 mr-1" />
-            Chiqish
-          </Button>
+            <Button 
+              onClick={() => onExit()}
+              variant="outline"
+              size="sm"
+              className="bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 shadow-lg backdrop-blur-sm"
+            >
+              <Home className="w-4 h-4 mr-1" />
+              Chiqish
+            </Button>
+          </motion.div>
         )}
         
         <div className="max-w-4xl mx-auto text-center">
@@ -481,17 +611,24 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
   if (gamePhase === 'instructions') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-8 relative">
-        {/* Leave button in bottom-left corner */}
-        {onLeave && (
-          <Button 
-            onClick={() => onLeave()}
-            variant="outline"
-            size="sm"
-            className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
+        {/* Exit button */}
+        {onExit && (
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-4 left-4 z-50"
           >
-            <Home className="w-4 h-4 mr-1" />
-            Chiqish
-          </Button>
+            <Button 
+              onClick={() => onExit()}
+              variant="outline"
+              size="sm"
+              className="bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 shadow-lg backdrop-blur-sm"
+            >
+              <Home className="w-4 h-4 mr-1" />
+              Chiqish
+            </Button>
+          </motion.div>
         )}
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -611,6 +748,10 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
                 onClick={() => {
                   const totalAnswers = gameStats.correctAnswers + gameStats.wrongAnswers;
                   const successRate = totalAnswers > 0 ? Math.round((gameStats.correctAnswers / totalAnswers) * 100) : 0;
+                  console.log('Game stats:', gameStats);
+                  console.log('Total answers:', totalAnswers);
+                  console.log('Correct answers:', gameStats.correctAnswers);
+                  console.log('Calculated success rate:', successRate);
                   onLeave(successRate);
                 }}
                 size="lg"
@@ -627,143 +768,154 @@ export const StrategicMathBattleship = ({ onLeave }: StrategicMathBattleshipProp
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4 relative">
-      {/* Leave button in bottom-left corner during game */}
-      {onLeave && (
-        <Button
-          onClick={() => onLeave()}
-          variant="outline"
-          size="sm"
-          className="fixed top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
+    <>
+      {/* Exit Button - Outside main container */}
+      {onExit && (
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed top-4 left-4 z-50"
         >
-          <Home className="w-4 h-4 mr-1" />
-          Chiqish
-        </Button>
+          <Button
+            onClick={() => onExit()}
+            variant="outline"
+            size="sm"
+            className="bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 shadow-lg"
+          >
+            <Home className="w-4 h-4 mr-1" />
+            Chiqish
+          </Button>
+        </motion.div>
       )}
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex gap-4">
-            <Badge variant="outline" className="text-white border-slate-600">
-              <Clock className="w-4 h-4 mr-1" />
-              {timeLeft}s
-            </Badge>
-            <Badge variant="outline" className="text-white border-slate-600">
-              {questionsAnswered}/{maxQuestions} Masala
-            </Badge>
-            {waitingForPlayerMove && (
-              <Badge variant="outline" className="text-white border-green-600 bg-green-600/20">
-                Kvadratni tanlang!
+
+      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        {/* main content */}
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex gap-4">
+              <Badge variant="outline" className="text-white border-slate-600">
+                <Clock className="w-4 h-4 mr-1" />
+                {timeLeft}s
               </Badge>
-            )}
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Math Problem Panel */}
-          <div className="lg:col-span-1">
-            <Card className="bg-slate-800/50 border-slate-700 h-full">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <span className="text-2xl">📐</span>
-                  <span>Matematik Masala</span>
-                </CardTitle>
-                <Progress 
-                  value={(timeLeft / (currentProblem?.timeLimit || 1)) * 100} 
-                  className="w-full"
-                />
-              </CardHeader>
-              <CardContent>
-                <AnimatePresence mode="wait">
-                  {currentProblem && (
-                    <motion.div
-                      key={currentProblem.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      className="space-y-6"
-                    >
-                      <div className="text-white text-lg leading-relaxed">
-                        {currentProblem.question}
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <input
-                          type="text"
-                          value={userAnswer}
-                          onChange={(e) => setUserAnswer(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && handleAnswer(userAnswer)}
-                          className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
-                          placeholder="Javobingizni kiriting..."
-                          autoFocus
-                        />
-                        <Button 
-                          onClick={() => handleAnswer(userAnswer)}
-                          className="w-full bg-blue-600 hover:bg-blue-700"
-                          disabled={!userAnswer.trim()}
-                        >
-                          Javob Berish
-                        </Button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </CardContent>
-            </Card>
+              <Badge variant="outline" className="text-white border-slate-600">
+                {questionsAnswered}/{maxQuestions} Masala
+              </Badge>
+              {waitingForPlayerMove && (
+                <Badge variant="outline" className="text-white border-green-600 bg-green-600/20">
+                  Kvadratni tanlang!
+                </Badge>
+              )}
+            </div>
           </div>
 
-          {/* Battleship Grid */}
-          <div className="lg:col-span-2">
-            <Card className="bg-slate-800/50 border-slate-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Grid3X3 className="w-6 h-6" />
-                  X-O Maydoni
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-3 gap-0 mb-4 max-w-xs mx-auto">
-                  {grid.map((row, rowIndex) => 
-                    row.map((cell, colIndex) => (
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Math Problem Panel */}
+            <div className="lg:col-span-1">
+              <Card className="bg-slate-800/50 border-slate-700 h-full">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <span className="text-2xl">📐</span>
+                    <span>Matematik Masala</span>
+                  </CardTitle>
+                  <Progress 
+                    value={(timeLeft / (currentProblem?.timeLimit || 1)) * 100} 
+                    className="w-full"
+                  />
+                </CardHeader>
+                <CardContent>
+                  <AnimatePresence mode="wait">
+                    {currentProblem && (
                       <motion.div
-                        key={`${rowIndex}-${colIndex}`}
-                        className={`
-                          w-16 h-16 -mr-px -mb-px border border-slate-600 flex items-center justify-center text-2xl font-bold cursor-pointer
-                          ${cell.owner === 'player' ? 'bg-red-500 text-white' : ''}
-                          ${cell.owner === 'computer' ? 'bg-orange-500 text-white' : ''}
-                          ${!cell.claimed ? 'bg-slate-700 hover:bg-slate-600' : ''}
-                          ${waitingForPlayerMove && !cell.claimed ? 'hover:border-green-500' : ''}
-                          ${!waitingForPlayerMove || cell.claimed ? 'cursor-not-allowed' : ''}
-                        `}
-                        onClick={() => handleCellClick(rowIndex, colIndex)}
-                        whileHover={!cell.claimed && waitingForPlayerMove ? { scale: 1.05 } : {}}
-                        whileTap={!cell.claimed && waitingForPlayerMove ? { scale: 0.95 } : {}}
+                        key={currentProblem.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        className="space-y-6"
                       >
-                        {cell.owner === 'player' && 'X'}
-                        {cell.owner === 'computer' && 'O'}
+                        <div className="text-white text-lg leading-relaxed">
+                          {currentProblem.question}
+                        </div>
+                        
+                        <div className="space-y-3">
+                          <input
+                            type="text"
+                            value={userAnswer}
+                            onChange={(e) => setUserAnswer(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAnswer(userAnswer)}
+                            className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                            placeholder="Javobingizni kiriting..."
+                            autoFocus
+                          />
+                          <Button 
+                            onClick={() => handleAnswer(userAnswer)}
+                            className="w-full bg-blue-600 hover:bg-blue-700"
+                            disabled={!userAnswer.trim()}
+                          >
+                            Javob Berish
+                          </Button>
+                        </div>
                       </motion.div>
-                    ))
-                  )}
-                </div>
+                    )}
+                  </AnimatePresence>
+                </CardContent>
+              </Card>
+            </div>
 
-                {/* Legend */}
-                <div className="flex justify-center gap-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center text-white font-bold">X</div>
-                    <span className="text-gray-300">Siz</span>
+            {/* Battleship Grid */}
+            <div className="lg:col-span-2">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Grid3X3 className="w-6 h-6" />
+                    X-O Maydoni
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-0 mb-4 max-w-xs mx-auto">
+                    {grid.map((row, rowIndex) => 
+                      row.map((cell, colIndex) => (
+                        <motion.div
+                          key={`${rowIndex}-${colIndex}`}
+                          className={`
+                            w-16 h-16 -mr-px -mb-px border border-slate-600 flex items-center justify-center text-2xl font-bold cursor-pointer
+                            ${cell.owner === 'player' ? 'bg-red-500 text-white' : ''}
+                            ${cell.owner === 'computer' ? 'bg-orange-500 text-white' : ''}
+                            ${!cell.claimed ? 'bg-slate-700 hover:bg-slate-600' : ''}
+                            ${waitingForPlayerMove && !cell.claimed ? 'hover:border-green-500' : ''}
+                            ${!waitingForPlayerMove || cell.claimed ? 'cursor-not-allowed' : ''}
+                          `}
+                          onClick={() => handleCellClick(rowIndex, colIndex)}
+                          whileHover={!cell.claimed && waitingForPlayerMove ? { scale: 1.05 } : {}}
+                          whileTap={!cell.claimed && waitingForPlayerMove ? { scale: 0.95 } : {}}
+                        >
+                          {cell.owner === 'player' && 'X'}
+                          {cell.owner === 'computer' && 'O'}
+                        </motion.div>
+                      ))
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center text-white font-bold">O</div>
-                    <span className="text-gray-300">Kompyuter</span>
+
+                  {/* Legend */}
+                  <div className="flex justify-center gap-6 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-red-500 rounded flex items-center justify-center text-white font-bold">X</div>
+                      <span className="text-gray-300">Siz</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center text-white font-bold">O</div>
+                      <span className="text-gray-300">Kompyuter</span>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
-        </div>
 
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
