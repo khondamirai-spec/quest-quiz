@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -133,7 +135,7 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
         {/* Leave button */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
             className="fixed top-4 left-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"
@@ -285,7 +287,7 @@ export const FixTheBug = ({ onLeave }: FixTheBugProps) => {
       {/* Leave button */}
       {onLeave && (
         <Button 
-          onClick={onLeave}
+          onClick={() => onLeave()}
           variant="outline"
           size="sm"
           className="fixed top-4 right-4 bg-purple-600/20 border-purple-500 text-purple-300 hover:bg-purple-600/30 hover:text-white hover:border-purple-400 z-50 shadow-lg"

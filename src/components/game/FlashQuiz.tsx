@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -143,7 +145,7 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
         {/* Leave button */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
             className="fixed top-4 left-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"
@@ -292,7 +294,7 @@ export const FlashQuiz = ({ onLeave }: FlashQuizProps) => {
       {/* Leave button */}
       {onLeave && (
         <Button 
-          onClick={onLeave}
+          onClick={() => onLeave()}
           variant="outline"
           size="sm"
           className="fixed top-4 right-4 bg-blue-600/20 border-blue-500 text-blue-300 hover:bg-blue-600/30 hover:text-white hover:border-blue-400 z-50 shadow-lg"

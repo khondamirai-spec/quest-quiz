@@ -200,14 +200,12 @@ export const Leaderboard = ({ entries, className, onClose }: LeaderboardProps) =
                         <div className="flex items-center gap-4 text-sm text-white/70">
                           <span className="flex items-center gap-1">
                             <Sword className="w-4 h-4" />
-                            Boss {entry.highestBoss}
+                            Level {entry.overallLevel}
                           </span>
-                          {entry.winStreak > 0 && (
-                            <span className="flex items-center gap-1">
-                              <Flame className="w-4 h-4 text-orange-400" />
-                              {entry.winStreak} ketma-ket
-                            </span>
-                          )}
+                          <span className="flex items-center gap-1">
+                            <Flame className="w-4 h-4 text-orange-400" />
+                            {entry.winRate}% g'alaba
+                          </span>
                         </div>
                       </div>
                     </div>

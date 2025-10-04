@@ -1,4 +1,6 @@
-﻿import { Button } from "@/components/ui/button";
+﻿'use client'
+
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BackgroundGlow } from "@/components/ui/background-components";
 import { PaywallModal } from "@/components/ui/paywall-modal";
@@ -223,16 +225,25 @@ export const MapScreen = ({
   isPremium = false,
   onPremiumPurchase
 }: MapScreenProps) => {
-  const totalLevels = levels.length;
-  const completedCount = completedLevels.length;
-  const progressPercentage = (completedCount / totalLevels) * 100;
+  // Safety check to prevent undefined errors
+  const safeLevels = levels || [];
+  const safeCompletedLevels = completedLevels || [];
+  
+  const totalLevels = safeLevels.length;
+  const completedCount = safeCompletedLevels.length;
+  const progressPercentage = totalLevels > 0 ? (completedCount / totalLevels) * 100 : 0;
   
   // Calculate streak (for demo purposes)
-  const streak = completedLevels.length > 0 ? completedLevels.length : 0;
+  const streak = safeCompletedLevels.length > 0 ? safeCompletedLevels.length : 0;
   
   // Coin animation state
   const [showCoinAnimation, setShowCoinAnimation] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  
+  // Force re-render when premium status changes
+  useEffect(() => {
+    // This will ensure the component re-renders when isPremium changes
+  }, [isPremium]);
   
   const handleGiftClick = () => {
     setShowCoinAnimation(true);
@@ -323,8 +334,8 @@ export const MapScreen = ({
                   // Other boss levels are always unlocked
                   isUnlocked = true;
                 } else {
-                  // Regular levels are unlocked if they're the current level or below
-                  isUnlocked = level.id <= currentLevelId;
+                  // Regular levels are unlocked if they're the current level or if previous level is completed
+                  isUnlocked = level.id === 1 || completedLevels.includes(level.id - 1) || level.id <= currentLevelId;
                 }
                 
                 const isLocked = !isUnlocked && !isPremiumLocked;

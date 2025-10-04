@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Avatar } from "./Avatar";
@@ -67,10 +69,10 @@ export const BattleScreen = ({
   useEffect(() => {
     if (gameState.bossHealth <= 0) {
       onVictory();
-    } else if (gameState.player.currentHealth <= 0) {
+    } else if (gameState.player?.currentHealth <= 0) {
       onDefeat();
     }
-  }, [gameState.bossHealth, gameState.player.currentHealth]);
+  }, [gameState.bossHealth, gameState.player?.currentHealth]);
 
   const handleTimeout = () => {
     setIsAnswered(true);
@@ -148,8 +150,8 @@ export const BattleScreen = ({
     setTimeout(() => setIsPlayerHurt(false), 500);
   };
 
-  if (!gameState.currentQuestion) {
-    return <div className="text-center text-2xl">Keyingi savol yuklanmoqda...</div>;
+  if (!gameState.currentQuestion || !gameState.player) {
+    return <div className="text-center text-2xl">O'yin yuklanmoqda...</div>;
   }
 
   const specialAttackReady = gameState.combo >= 3;

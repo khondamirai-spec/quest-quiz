@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -158,7 +160,7 @@ export const BiologyCaseStudy = ({ onLeave }: BiologyCaseStudyProps) => {
         {/* Leave button */}
         {onLeave && (
           <Button 
-            onClick={onLeave}
+            onClick={() => onLeave()}
             variant="outline"
             size="sm"
             className="fixed top-4 left-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400 z-50 shadow-lg"
@@ -307,7 +309,7 @@ export const BiologyCaseStudy = ({ onLeave }: BiologyCaseStudyProps) => {
       {/* Leave button */}
       {onLeave && (
         <Button 
-          onClick={onLeave}
+          onClick={() => onLeave()}
           variant="outline"
           size="sm"
           className="fixed top-4 right-4 bg-green-600/20 border-green-500 text-green-300 hover:bg-green-600/30 hover:text-white hover:border-green-400 z-50 shadow-lg"

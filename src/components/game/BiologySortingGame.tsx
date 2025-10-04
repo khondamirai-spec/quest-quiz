@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -125,7 +127,7 @@ export const BiologySortingGame = ({ onLeave }: BiologySortingGameProps) => {
 
       // Check if all concepts are now matched correctly
       const newMatchedConcepts = [...matchedConcepts, selectedConcept.id];
-      const allConceptsMatched = currentRoundData?.concepts.every(concept => 
+      const allConceptsMatched = currentRoundData?.concepts.every((concept: any) =>
         newMatchedConcepts.includes(concept.id)
       );
 
