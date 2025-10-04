@@ -30,7 +30,15 @@ export default function Home() {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [gameState, setGameState] = useState<GameState>({
     currentLevel: 1,
-    currentBoss: null,
+    currentBoss: {
+      id: 1,
+      name: "Test Boss",
+      maxHealth: 100,
+      damage: 10,
+      theme: "Test",
+      difficulty: 1,
+      icon: "🐲"
+    },
     currentQuestion: null,
     score: 0,
     lives: 3,
