@@ -17,7 +17,6 @@ export interface Level {
   questionsRequired?: number; // For test levels
   maxHealth?: number; // For boss levels
   damage?: number; // For boss levels
-  isPremium?: boolean; // For premium levels
 }
 
 export interface Boss {
@@ -62,7 +61,6 @@ export interface GameState {
   };
   hasShield: boolean;
   doubleDamageActive: boolean;
-  isPremium: boolean;
 }
 
 export interface LeaderboardEntry {

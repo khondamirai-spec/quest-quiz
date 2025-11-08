@@ -70,7 +70,6 @@ export default function Home() {
     },
     hasShield: false,
     doubleDamageActive: false,
-    isPremium: false,
   });
 
   // Load saved game state from localStorage
@@ -161,13 +160,6 @@ export default function Home() {
     setSelectedSubject(null);
   };
 
-  const handlePremiumPurchase = () => {
-    setGameState(prev => ({
-      ...prev,
-      isPremium: true,
-    }));
-    toast.success("Premium activated! Enjoy unlimited access!");
-  };
 
   // Render logic with basic game phases
   if (currentPage === "home") {
@@ -177,8 +169,6 @@ export default function Home() {
         onShowLeaderboard={handleShowLeaderboard}
         onShowProfile={handleShowProfile}
         onShowGuide={handleShowGuide}
-        isPremium={gameState.isPremium}
-        onPremiumPurchase={handlePremiumPurchase}
       />
     );
   }
@@ -399,7 +389,6 @@ export default function Home() {
       },
       hasShield: false,
       doubleDamageActive: false,
-      isPremium: false,
     };
 
     return (
@@ -505,8 +494,6 @@ export default function Home() {
         onShowProfile={handleShowProfile}
         onShowGuide={handleShowGuide}
         subject={selectedSubject || "math"}
-        isPremium={gameState.isPremium}
-        onPremiumPurchase={handlePremiumPurchase}
       />
     );
   }

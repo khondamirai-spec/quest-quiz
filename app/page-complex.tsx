@@ -54,8 +54,7 @@ export default function Home() {
       doubleDamage: 1
     },
     hasShield: false,
-    doubleDamageActive: false,
-    isPremium: false
+    doubleDamageActive: false
   });
 
   const [currentLevelId, setCurrentLevelId] = useState(1);
@@ -117,8 +116,7 @@ export default function Home() {
         doubleDamage: 1
       },
       hasShield: false,
-      doubleDamageActive: false,
-      isPremium: gameState.isPremium
+      doubleDamageActive: false
     });
   };
 
@@ -482,13 +480,6 @@ export default function Home() {
     setShowGiftModal(false);
   };
 
-  const handlePremiumPurchase = () => {
-    setGameState(prev => ({
-      ...prev,
-      isPremium: true
-    }));
-    toast.success("🎉 Premium Sarguzasht ochildi! Barcha imkoniyatlardan foydalanishingiz mumkin!");
-  };
 
   const handleDefeat = () => {
     setGameState(prev => ({
@@ -565,8 +556,7 @@ export default function Home() {
         doubleDamage: 1
       },
       hasShield: false,
-      doubleDamageActive: false,
-      isPremium: gameState.isPremium
+      doubleDamageActive: false
     });
     toast.info("Bosh sahifaga qaytildi");
   };
@@ -612,8 +602,6 @@ export default function Home() {
         onShowLeaderboard={() => setShowLeaderboard(true)}
         onShowProfile={() => setShowProfile(true)}
         onShowGuide={() => setShowGuide(true)}
-        isPremium={gameState.isPremium}
-        onPremiumPurchase={handlePremiumPurchase}
       />
     );
   }
@@ -635,8 +623,6 @@ export default function Home() {
           giftOpened={giftOpened}
           onGiftOpen={handleGiftOpen}
           onGiftClaimed={handleGiftClaimed}
-          isPremium={gameState.isPremium}
-          onPremiumPurchase={handlePremiumPurchase}
         />
       )}
       

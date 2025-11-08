@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BackgroundGlow } from "@/components/ui/background-components";
-import { PaywallModal } from "@/components/ui/paywall-modal";
 import { Level, Player } from "@/types/game";
 import { cn } from "@/lib/utils";
-import { Lock, CheckCircle, Trophy, Flame, Zap, BookOpen, Star, Swords, User, Home, Crown } from "lucide-react";
+import { Lock, CheckCircle, Trophy, Flame, Zap, BookOpen, Star, Swords, User, Home } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ExpandableTabs } from "@/components/ui/expandable-tabs";
@@ -204,8 +203,6 @@ interface MapScreenProps {
   giftOpened?: boolean;
   onGiftOpen?: () => void;
   onGiftClaimed?: (coins: number) => void;
-  isPremium?: boolean;
-  onPremiumPurchase?: () => void;
 }
 
 export const MapScreen = ({ 
@@ -221,9 +218,7 @@ export const MapScreen = ({
   giftAvailable,
   giftOpened,
   onGiftOpen,
-  onGiftClaimed,
-  isPremium = false,
-  onPremiumPurchase
+  onGiftClaimed
 }: MapScreenProps) => {
   // Safety check to prevent undefined errors
   const safeLevels = levels || [];
@@ -238,12 +233,6 @@ export const MapScreen = ({
   
   // Coin animation state
   const [showCoinAnimation, setShowCoinAnimation] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
-  
-  // Force re-render when premium status changes
-  useEffect(() => {
-    // This will ensure the component re-renders when isPremium changes
-  }, [isPremium]);
   
   const handleGiftClick = () => {
     setShowCoinAnimation(true);
@@ -318,17 +307,11 @@ export const MapScreen = ({
                 const isCompleted = completedLevels.includes(level.id);
                 const isBoss = level.type === "boss" || level.type === "math-boss-battle" || level.type === "algoritm-qorovuli" || level.type === "mutant-monster-battle";
                 
-                // Special unlock logic for boss levels
+                // Unlock logic
                 let isUnlocked = false;
-                let isPremiumLocked = false;
                 
-                if (level.isPremium) {
-                  // Premium levels are always visible but locked unless both conditions are met
-                  const firstBossDefeated = completedLevels.includes(4);
-                  isUnlocked = isPremium && firstBossDefeated;
-                  isPremiumLocked = !isPremium || !firstBossDefeated; // Show locked if no premium OR first boss not defeated
-                } else if (isBoss && (level.type === "algoritm-qorovuli" || level.type === "math-boss-battle" || level.type === "mutant-monster-battle")) {
-                  // Boss is only unlocked if level 3 is completed with 80%+ success
+                if (isBoss && (level.type === "algoritm-qorovuli" || level.type === "math-boss-battle" || level.type === "mutant-monster-battle")) {
+                  // Boss is only unlocked if level 3 is completed
                   isUnlocked = completedLevels.includes(3);
                 } else if (isBoss) {
                   // Other boss levels are always unlocked
@@ -338,7 +321,7 @@ export const MapScreen = ({
                   isUnlocked = level.id === 1 || completedLevels.includes(level.id - 1) || level.id <= currentLevelId;
                 }
                 
-                const isLocked = !isUnlocked && !isPremiumLocked;
+                const isLocked = !isUnlocked;
                 const isCurrent = level.id === currentLevelId && !isCompleted;
                 
                 // Alternate left and right positioning for decorative elements
@@ -356,19 +339,11 @@ export const MapScreen = ({
                     <div className="flex flex-col items-center gap-2">
                       <button
                         onClick={() => {
-                          if (isPremiumLocked) {
-                            if (level.isPremium && !completedLevels.includes(4)) {
-                              // Show message that first boss needs to be defeated
-                              // For now, just open paywall - you can add a different modal later
-                              setShowPaywall(true);
-                            } else {
-                              setShowPaywall(true);
-                            }
-                          } else if (!isLocked) {
+                          if (!isLocked) {
                             onSelectLevel(level);
                           }
                         }}
-                        disabled={isLocked && !isPremiumLocked}
+                        disabled={isLocked}
                 className={cn(
                           "relative rounded-full flex items-center justify-center transition-all transform hover:scale-110 disabled:hover:scale-100 active:scale-95",
                           // Size based on type - Ensure minimum 44px touch target
@@ -381,8 +356,6 @@ export const MapScreen = ({
                           isCurrent && !isBoss && "bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-500 border-[6px] border-b-[8px] border-amber-600 animate-pulse shadow-[0_8px_0_0_rgba(217,119,6,0.3),0_0_20px_rgba(251,191,36,0.5)]",
                           // Current boss - Epic purple/red
                           isCurrent && isBoss && "bg-gradient-to-b from-purple-400 via-fuchsia-500 to-pink-600 border-[6px] border-b-[8px] border-fuchsia-700 animate-pulse shadow-[0_8px_0_0_rgba(162,28,175,0.3),0_0_30px_rgba(217,70,239,0.6)]",
-                          // Premium locked state - Golden gradient with reduced opacity
-                          isPremiumLocked && level.isPremium && "bg-gradient-to-b from-yellow-400 via-amber-500 to-orange-600 border-[6px] border-b-[8px] border-orange-700 opacity-50 hover:opacity-70 cursor-pointer",
                           // Locked state - Gray 3D
                           isLocked && "bg-gradient-to-b from-gray-300 via-gray-400 to-gray-500 border-[6px] border-b-[8px] border-gray-600 cursor-not-allowed opacity-70",
                           // Available state - Blue/Purple gradient
@@ -397,13 +370,6 @@ export const MapScreen = ({
                         {/* Icon content */}
                         {isLocked ? (
                           <Lock className="relative z-10 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-600 drop-shadow-md" />
-                        ) : isPremiumLocked && level.isPremium ? (
-                          <div className="relative z-10 flex flex-col items-center">
-                            <Lock className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white drop-shadow-lg mb-1" />
-                            <span className="text-xs sm:text-sm font-bold text-white drop-shadow-md">
-                              {completedLevels.includes(4) ? "PREMIUM" : "BOSS FIRST"}
-                            </span>
-                          </div>
                         ) : isCompleted ? (
                           <CheckCircle className="relative z-10 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white drop-shadow-lg" fill="currentColor" />
                         ) : (
@@ -437,12 +403,6 @@ export const MapScreen = ({
                           </div>
                         )}
 
-                        {/* Premium indicator */}
-                        {level.isPremium && !isLocked && (
-                          <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center border-3 border-white shadow-lg animate-pulse">
-                            <Star className="w-5 h-5 text-white" />
-                          </div>
-                        )}
 
                         {/* Sparkle effect for current level */}
                         {isCurrent && (
@@ -458,21 +418,13 @@ export const MapScreen = ({
                   <div className="text-center max-w-[100px] sm:max-w-none">
                         <p className={cn(
                           "text-xs sm:text-sm font-bold truncate px-1",
-                          isLocked ? "text-zinc-400" : isPremiumLocked ? "text-yellow-400" : "text-zinc-800 dark:text-white"
+                          isLocked ? "text-zinc-400" : "text-zinc-800 dark:text-white"
                         )}>
                           {level.name}
                         </p>
                         {isBoss && (
                           <p className="text-[10px] sm:text-xs text-zinc-500 dark:text-zinc-400">
                             Boss Level
-                          </p>
-                        )}
-                        {level.isPremium && (
-                          <p className="text-[10px] sm:text-xs text-yellow-500 dark:text-yellow-400 font-semibold">
-                            {isPremiumLocked ? 
-                              (completedLevels.includes(4) ? "Premium Locked" : "Defeat Boss First") : 
-                              "Premium Level"
-                            }
                           </p>
                         )}
                   </div>
@@ -484,12 +436,6 @@ export const MapScreen = ({
                         </Badge>
                       )}
 
-                      {/* Unit badge for first premium level */}
-                      {level.isPremium && index === 4 && (
-                        <Badge variant="secondary" className="text-[10px] sm:text-xs px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-yellow-500">
-                          Unit 2 - Premium
-                        </Badge>
-                      )}
 
                       {/* Animated horizontal line - shows at current level */}
                       {isCurrent && (
@@ -651,92 +597,7 @@ export const MapScreen = ({
           </div>
         </div>
 
-        {/* Premium Unlock Footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="sticky bottom-0 w-full z-20"
-        >
-          {isPremium ? (
-            /* Premium Unlocked State */
-            <div className="w-full py-4 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 shadow-lg">
-              <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center justify-center gap-3">
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <Crown className="w-6 h-6 text-white" />
-                  </motion.div>
-                  <span className="text-white font-bold text-lg">
-                    Premium Sarguzasht ochilgan!
-                  </span>
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <Crown className="w-6 h-6 text-white" />
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* Premium Locked State */
-            <div className="w-full py-4 bg-gradient-to-r from-slate-800 via-purple-900 to-slate-800 border-t border-white/20 shadow-lg backdrop-blur-sm">
-              <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center justify-center gap-4">
-                  <motion.div
-                    animate={{
-                      rotate: [0, 5, -5, 0],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <Lock className="w-6 h-6 text-yellow-400" />
-                  </motion.div>
-                  
-                  <span className="text-white font-medium text-center flex-1">
-                    Qo'shimcha darajalarni ochish uchun to'lang
-                  </span>
-                  
-                  <Button
-                    onClick={() => setShowPaywall(true)}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  >
-                    Darajalarni ochish
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
       </div>
-
-      {/* Paywall Modal */}
-      <PaywallModal
-        isOpen={showPaywall}
-        onClose={() => setShowPaywall(false)}
-        onPurchase={() => {
-          onPremiumPurchase?.();
-          setShowPaywall(false);
-        }}
-      />
     </div>
   );
 };

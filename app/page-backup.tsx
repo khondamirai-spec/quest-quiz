@@ -59,7 +59,6 @@ export default function Home() {
     },
     hasShield: false,
     doubleDamageActive: false,
-    isPremium: false,
   });
 
   // Load saved game state from localStorage
@@ -122,13 +121,6 @@ export default function Home() {
     }));
   };
 
-  const handlePremiumPurchase = () => {
-    setGameState(prev => ({
-      ...prev,
-      isPremium: true,
-    }));
-    toast.success("Premium activated! Enjoy unlimited access!");
-  };
 
   // Simple render logic to avoid complex state management issues
   if (gameState.gamePhase === "home") {
@@ -138,8 +130,6 @@ export default function Home() {
         onShowLeaderboard={handleShowLeaderboard}
         onShowProfile={handleShowProfile}
         onShowGuide={handleShowGuide}
-        isPremium={gameState.isPremium}
-        onPremiumPurchase={handlePremiumPurchase}
       />
     );
   }

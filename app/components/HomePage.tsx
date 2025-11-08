@@ -3,21 +3,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { PaywallModal } from "@/components/ui/paywall-modal";
-import { BookOpen, Code, Atom, Trophy, Zap, Star, User, HelpCircle, Lock, Crown } from "lucide-react";
+import { BookOpen, Code, Atom, Trophy, Zap, Star, User, HelpCircle } from "lucide-react";
 
 interface HomePageProps {
   onSelectSubject: (subject: string) => void;
   onShowLeaderboard?: () => void;
   onShowProfile?: () => void;
   onShowGuide?: () => void;
-  isPremium?: boolean;
-  onPremiumPurchase?: () => void;
 }
 
-export const HomePage = ({ onSelectSubject, onShowLeaderboard, onShowProfile, onShowGuide, isPremium = false, onPremiumPurchase }: HomePageProps) => {
+export const HomePage = ({ onSelectSubject, onShowLeaderboard, onShowProfile, onShowGuide }: HomePageProps) => {
   const [hoveredSubject, setHoveredSubject] = useState<string | null>(null);
-  const [showPaywall, setShowPaywall] = useState(false);
 
   const subjects = [
     {
@@ -544,212 +540,6 @@ export const HomePage = ({ onSelectSubject, onShowLeaderboard, onShowProfile, on
           <p>Savollarga to'g'ri javob bering va bosslarni mag'lub eting va mukofotlar oling!</p>
         </motion.div>
       </div>
-
-      {/* Premium Unlock Footer */}
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 0.8 }}
-        className="relative w-full mt-auto"
-      >
-        {isPremium ? (
-          /* Premium Unlocked State */
-          <div className="relative w-full py-12 bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-600 overflow-hidden">
-            {/* Animated Stars Background */}
-            {[...Array(15)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-white rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 1, 0.3],
-                  scale: [1, 1.5, 1],
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-            
-            <div className="relative z-10 text-center">
-              <motion.div
-                className="inline-flex items-center gap-3 mb-4"
-                animate={{
-                  scale: [1, 1.05, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                <Crown className="w-8 h-8 text-white" />
-                <h3 className="text-2xl font-bold text-white">
-                  Premium Sarguzasht ochilgan!
-                </h3>
-                <Crown className="w-8 h-8 text-white" />
-              </motion.div>
-              <p className="text-white/90 text-lg">
-                Barcha premium imkoniyatlardan foydalanishingiz mumkin!
-              </p>
-            </div>
-          </div>
-        ) : (
-          /* Premium Locked State */
-          <div className="relative w-full py-16 bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/30 to-pink-500/20" />
-            
-            {/* Floating Particles */}
-            {[...Array(25)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -30, 0],
-                  opacity: [0.2, 1, 0.2],
-                  scale: [1, 1.5, 1],
-                }}
-                transition={{
-                  duration: 3 + Math.random() * 4,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-
-            {/* Glowing Waves */}
-            <motion.div
-              className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-500/30 via-transparent to-transparent"
-              animate={{
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            
-            <motion.div
-              className="absolute bottom-0 right-0 w-full h-32 bg-gradient-to-t from-purple-500/30 via-transparent to-transparent"
-              animate={{
-                opacity: [0.6, 0.3, 0.6],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2,
-              }}
-            />
-
-            <div className="relative z-10 max-w-6xl mx-auto px-6">
-              <div className="text-center mb-8">
-                <motion.div
-                  className="inline-flex items-center gap-3 mb-6"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Lock className="w-8 h-8 text-yellow-400" />
-                  <h3 className="text-3xl font-bold text-white">
-                    Premium Sarguzashtni oching
-                  </h3>
-                  <Lock className="w-8 h-8 text-yellow-400" />
-                </motion.div>
-                
-                <p className="text-xl text-gray-300 mb-8">
-                  Agar siz ochsangiz, quyidagilarni olasiz:
-                </p>
-              </div>
-
-              {/* Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                {[
-                  {
-                    icon: Star,
-                    title: "Yangi maxsus darajalar",
-                    description: "Premium ekskluziv kontent va yangi boss janglari"
-                  },
-                  {
-                    icon: Lock,
-                    title: "Yashirin boss janglari",
-                    description: "Maxsus bosslar va epik janglar faqat Premium a'zolar uchun"
-                  },
-                  {
-                    icon: Trophy,
-                    title: "Noyob mukofotlar va sovrinlar",
-                    description: "Premium sovrinlar, ekskluziv avatar va maxsus mukofotlar"
-                  }
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 2.2 + index * 0.1, duration: 0.6 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:border-white/40 transition-all duration-300"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <feature.icon className="w-5 h-5 text-white" />
-                      </div>
-                      <h4 className="text-white font-semibold text-lg">
-                        {feature.title}
-                      </h4>
-                    </div>
-                    <p className="text-gray-300 text-sm">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Call to Action Button */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 2.8, duration: 0.6 }}
-                className="text-center"
-              >
-                <Button
-                  onClick={() => setShowPaywall(true)}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold text-xl py-4 px-12 rounded-xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
-                >
-                  <Star className="w-6 h-6 mr-3" />
-                  Hozir ochish
-                  <Star className="w-6 h-6 ml-3" />
-                </Button>
-              </motion.div>
-            </div>
-          </div>
-        )}
-      </motion.div>
-
-      {/* Paywall Modal */}
-      <PaywallModal
-        isOpen={showPaywall}
-        onClose={() => setShowPaywall(false)}
-        onPurchase={() => {
-          onPremiumPurchase?.();
-          setShowPaywall(false);
-        }}
-      />
 
     </div>
   );

@@ -41,47 +41,6 @@ export const BIOLOGY_LEVELS: Level[] = [
     difficulty: 2,
     icon: "👹",
     questionsRequired: 8
-  },
-  // Premium Biology Levels (5-8)
-  {
-    id: 5,
-    name: "Premium Xotira Jang",
-    type: "biology-memory-match",
-    theme: "Biology",
-    difficulty: 2,
-    icon: "🧠",
-    questionsRequired: 5,
-    isPremium: true
-  },
-  {
-    id: 6,
-    name: "Premium Tadqiqot",
-    type: "biology-case-study",
-    theme: "Biology",
-    difficulty: 2,
-    icon: "🔬",
-    questionsRequired: 7,
-    isPremium: true
-  },
-  {
-    id: 7,
-    name: "Premium Saralash",
-    type: "biology-sorting",
-    theme: "Biology",
-    difficulty: 2,
-    icon: "🧪",
-    questionsRequired: 15,
-    isPremium: true
-  },
-  {
-    id: 8,
-    name: "Epic Mutant Boss",
-    type: "mutant-monster-battle",
-    theme: "Biology",
-    difficulty: 3,
-    icon: "🔥",
-    questionsRequired: 12,
-    isPremium: true
   }
 ];
 
@@ -126,47 +85,6 @@ export const MATH_LEVELS: Level[] = [
     difficulty: 2,
     icon: "⚔️",
     questionsRequired: 7
-  },
-  // Premium Math Levels (5-8)
-  {
-    id: 5,
-    name: "Premium X-O Jang",
-    type: "battleship",
-    theme: "Mathematics",
-    difficulty: 2,
-    icon: "🎯",
-    questionsRequired: 15,
-    isPremium: true
-  },
-  {
-    id: 6,
-    name: "Premium Flash Quiz",
-    type: "flash-quiz",
-    theme: "Mathematics",
-    difficulty: 2,
-    icon: "⚡",
-    questionsRequired: 12,
-    isPremium: true
-  },
-  {
-    id: 7,
-    name: "Premium Tenglama",
-    type: "equation-builder",
-    theme: "Mathematics",
-    difficulty: 2,
-    icon: "🧮",
-    questionsRequired: 8,
-    isPremium: true
-  },
-  {
-    id: 8,
-    name: "Epic Math Boss",
-    type: "math-boss-battle",
-    theme: "Mathematics",
-    difficulty: 3,
-    icon: "⚔️",
-    questionsRequired: 10,
-    isPremium: true
   }
 ];
 
@@ -211,47 +129,6 @@ export const CODING_LEVELS: Level[] = [
     difficulty: 3,
     icon: "🛡️",
     questionsRequired: 8
-  },
-  // Premium Coding Levels (5-8)
-  {
-    id: 5,
-    name: "Premium Xatolik",
-    type: "fix-the-bug",
-    theme: "Coding",
-    difficulty: 2,
-    icon: "🐛",
-    questionsRequired: 8,
-    isPremium: true
-  },
-  {
-    id: 6,
-    name: "Premium To'g'ri/Noto'g'ri",
-    type: "true-false-code",
-    theme: "Coding",
-    difficulty: 2,
-    icon: "✅❌",
-    questionsRequired: 8,
-    isPremium: true
-  },
-  {
-    id: 7,
-    name: "Premium Kod Moslashtirish",
-    type: "code-matching",
-    theme: "Coding",
-    difficulty: 2,
-    icon: "🔗",
-    questionsRequired: 10,
-    isPremium: true
-  },
-  {
-    id: 8,
-    name: "Epic Algoritm Boss",
-    type: "algoritm-qorovuli",
-    theme: "Coding",
-    difficulty: 4,
-    icon: "🛡️",
-    questionsRequired: 15,
-    isPremium: true
   }
 ];
 
