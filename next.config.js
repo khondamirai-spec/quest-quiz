@@ -5,7 +5,7 @@ const nextConfig = {
     unoptimized: true
   },
   // Enable static exports for deployment
-  output: 'export',
+  // output: 'export', // Commented out for dev server
   trailingSlash: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
